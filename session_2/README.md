@@ -5,6 +5,8 @@
 To start we created an EC2 instance which we named ```Terraform server``` we created that instance with our ssh-key, so we can ssh into it and run commands and install Terraform (binary). To do that we go to this website:
 
 ```
+echo $PATH
+
 https://www.terraform.io/downloads.html
 ```
 
