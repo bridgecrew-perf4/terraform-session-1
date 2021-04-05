@@ -49,3 +49,20 @@ your output should look like this:
 And you are all set!
 
 After that we created a directory session_2, where we created our first configuration file ```main.tf``` (all terraform files have .tf extension) which has an EC2 resource, to provision that instance with ```Terraform server``` we have to give credentials such as ```access-key``` and ```secret-key```, but instead we created an EC2 role and attached it to it and we are good to go. When provision resources with terraform we also have to create providres.tf file that's how terraform knows which provider we are using and which cloud provider we want to provision our resource.
+
+## Additional questions
+
+#### Why do we have to move our terraform file under /usr/bin/ ?
+```
+- /bin : For binaries usable before the /usr partition is mounted. This is used for trivial binaries used in the very early boot stage or ones that you need to have available in booting single-user mode. Think of binaries like cat, ls, etc.
+
+ - /sbin : Same, but for binaries with superuser (root) privileges required.
+
+- /usr/bin : Same as first, but for general system-wide binaries.
+
+- /usr/sbin : Same as above, but for binaries with superuser (root) privileges required.
+```
+
+## Useful links
+
+[Filesystem Hierarchy Standard (FHS) in LINUX] (https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
