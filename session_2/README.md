@@ -46,7 +46,6 @@ your output should look like this:
  ```
  Terraform v0.14.9
  ```
-
 And you are all set!
 
-After that we created a directory session_2, where we created our first configuration file ```main.tf``` (all terraform files have .tf extension) which has an EC2 resource, to provision that instance with ```Terraform server``` we have to give credentials such as ```access-key``` and ```secret-key```, but instead we created an EC2 role and attached it to it and were able to apply our code on AWS console. 
+After that we created a directory session_2, where we created our first configuration file ```main.tf``` (all terraform files have .tf extension) which has an EC2 resource, to provision that instance with ```Terraform server``` we have to give credentials such as ```access-key``` and ```secret-key```, but instead we created an EC2 role and attached it to it and we are good to go. When provision resources with terraform we also have to create providres.tf file that's how terraform knows which provider we are using and which cloud provider we want to provision our resource.
