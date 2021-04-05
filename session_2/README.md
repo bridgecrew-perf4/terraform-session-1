@@ -1,4 +1,4 @@
-## Terraform installation on EC2 instance and Provisioning  EC2 resource with Terraform server which has attached IAM role.
+## Terraform installation on EC2 instance.
 
 ### Description
 
