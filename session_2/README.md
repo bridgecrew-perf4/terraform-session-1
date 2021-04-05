@@ -1,4 +1,8 @@
-To start we create EC2 instance on AWS console and install Terraform init. We created that instance with out ssh-key so we can ssh into it and run commands and install terraform. To do that we go to this website
+## Terraform installation on EC2 instance and Provisioning  EC2 resource with Terraform server which has attached IAM role.
+
+### Description
+
+To start we create EC2 instance which we give a name ```Terraform server``` on AWS console and install Terraform binary inside of it so we created that instance with out ssh-key so we can ssh into it and run commands and install terraform. To do that we go to this website
 
 ```
 https://www.terraform.io/downloads.html
@@ -34,3 +38,5 @@ if we run which terraform we will get the next output:
 /usr/bin/terraform
 ```
 And you are all set.
+
+In this session we created provisioned an EC2 instance with Terraform server that we created earlier, instead of using credentials such as ```access-key``` and ```secret-key``` we attached a EC2 role to our Terraform server and were able to apply our code
