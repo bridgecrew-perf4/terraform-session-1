@@ -56,7 +56,7 @@ After that we created a directory session_2, where we created our first configur
 ```
 - /bin : For binaries usable before the /usr partition is mounted. This is used for trivial binaries used in the very early boot stage or ones that you need to have available in booting single-user mode. Think of binaries like cat, ls, etc.
 
- - /sbin : Same, but for binaries with superuser (root) privileges required.
+- /sbin : Same, but for binaries with superuser (root) privileges required.
 
 - /usr/bin : Same as first, but for general system-wide binaries.
 
