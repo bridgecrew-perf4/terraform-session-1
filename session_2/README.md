@@ -2,7 +2,7 @@
 
 ### Description
 
-To start we created an EC2 instance which we named ```Terraform server```  we created that instance with our ssh-key, so we can ssh into it and run commands and install Terraform (binary). To do that we go to this website:
+To start we created an EC2 instance which we named ```Terraform server``` we created that instance with our ssh-key, so we can ssh into it and run commands and install Terraform (binary). To do that we go to this website:
 
 ```
 https://www.terraform.io/downloads.html
@@ -48,7 +48,7 @@ your output should look like this:
  ```
 And you are all set!
 
-    After that we created a directory session_2, where we created our first configuration file ```main.tf``` (all terraform files have .tf extension) which has an EC2 resource, to provision that instance with ```Terraform server``` we have to give credentials such as ```access-key``` and ```secret-key```, but instead we created an EC2 role and attached it to it and we are good to go. When provision resources with terraform we also have to create providres.tf file that's how terraform knows which provider we are using and which cloud provider we want to provision our resource.
+  After that we created a directory session_2, where we created our first configuration file ```main.tf``` (all terraform files have .tf extension) which has an EC2 resource, to provision that instance with ```Terraform server``` we have to give credentials such as ```access-key``` and ```secret-key```, but instead we created an EC2 role and attached it to it and we are good to go. When provision resources with terraform we also have to create providres.tf file that's how terraform knows which provider we are using and which cloud provider we want to provision our resource.
 
 ## Additional questions
 
@@ -64,5 +64,7 @@ And you are all set!
 ```
 
 ## Useful links
+
+[Download Terraform](https://www.terraform.io/downloads.html)
 
 [Filesystem Hierarchy Standard (FHS) in LINUX](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
