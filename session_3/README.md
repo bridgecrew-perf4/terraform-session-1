@@ -1,7 +1,9 @@
 ### Terraform reference to resources
 
-In Terraform when you want reference to another resource in your resource block you don’t it put it inside of “-----”  marks. If its description of something you have to put inside of the “”.  If its resource name you specify the labels of the resource, and at the end you use (name, id, arn check the official documentation) depending of the resource what you want to use.  Every resource id are unique, that’s why we can ref to specific resource. "" in plural is a hard coded value. 
-First label (resource type).second label (Local name). Attribute (could be id, name, arn) that you are using. 
+In Terraform when you want reference to another resource in your resource block, you don’t it put it inside of “-----”  marks, you can use implicit or explicit way to do that. The most common source dependencies is an ```implicit``` dependency, it helps terraform to understand relationship between your resources. But sometimes dependencies between resources are not visible to terraform and in that case we use ```explicit``` dependency you use  an argument ```depends_on``` which accepted by any resource or module. Since terraform will wait to create the dependent resource until after the specified resource is created, adding explicit dependencies can increase the length of time it takes for terraform to create your infrastructure. On description ```key``` the ```value``` always hasto be inside  of the “” marks, that's  how terraform recommended. In implicit dependancy you take you specifically use the labels of the resource, and at the end you use (name, id, arn check the official documentation) depending of the resource what you want to reference.  Every resource has unique id (logical id), that’s why we can reference to. 
+When we specify plural values of the key in the block we use [] to list of resources id's that we want to refer.
+
+First label (resource type).Second label (Local name).Attribute (could be id, name, arn) 
 
 Name values
 Input variable
