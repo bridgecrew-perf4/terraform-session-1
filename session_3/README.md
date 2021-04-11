@@ -1,13 +1,13 @@
-### Terraform reference
+### Terraform reference to resources
 
-In Terraform when you want reference to another resource in your resource block you don’t have to put it inside of “”  marks. If its description of something you have to put inside of the “”.  If its resource name you specify the labels of the resource, and at the end you use (name, id, arn check the official documentation) depending of the resource what you want to use.  Every resource id are unique, that’s why we can ref to specific resource. "" in plural is a hard coded value. 
+In Terraform when you want reference to another resource in your resource block you don’t it put it inside of “-----”  marks. If its description of something you have to put inside of the “”.  If its resource name you specify the labels of the resource, and at the end you use (name, id, arn check the official documentation) depending of the resource what you want to use.  Every resource id are unique, that’s why we can ref to specific resource. "" in plural is a hard coded value. 
 First label (resource type).second label (Local name). Attribute (could be id, name, arn) that you are using. 
 
 Name values
 Input variable
 
 Single bases are when we use just single resource and Modules
-declate variables in var.tfvars file where you can change your input variables there. we dont have to even touch the variables.tf file.
+declare variables in var.tfvars file where you can change your input variables there. we dont have to even touch the variables.tf file.
 different configurations for the same modules.
 
 When we change the size of the instance terraform doesn't delete the instance it will go stop the instance , resizes it and starts again. 
