@@ -12,24 +12,29 @@ resource "aws_security_group" "web_sg" {
     .............
 }
 ```
-First label (resource type).Second label (Local name).Attribute (could be id, name, arn) 
+First label (resource type).Second label (Local name).Attribute (could be id, name, arn...) 
 
-The rest is still in Process....
+In terraform you also can to reference to ```named values```  sush as:
 
-Name values
-Input variable
+- Input variable
+- Local values
+- Resources (aws_security_group.web_sg.id)
+- Child module outputs (module.rds_module.module_username)
+- Data sources (data.aws_instance.id)
+- file system and workspace info (terraform.workspace)
+- block-local values 
 
-Single bases are when we use just single resource and Modules
-declare variables in var.tfvars file where you can change your input variables there. we dont have to even touch the variables.tf file.
-different configurations for the same modules.
+The examples that we use earlier are called ```single bases```, when we use just single resource.
 
-When we change the size of the instance terraform doesn't delete the instance it will go stop the instance , resizes it and starts again. 
+<p>
+When we declare variables in var.tfvars file and and not in varaible.tf it's way easier to change our input variables, because we humans are tend to do some mistakes, which can cause an error. Instead of going to variable.tf file where could be a 100s of variables and we have to look for the variable that we want to change, in tfvars file is one line on code for every input variable.
+</p>
+<p>
+When we define our dev.tf and qa.tf variables file they have to be inside of the tfvars directory, but if we want to keep them outside of tfvars directory we have to give dev.tfvars and qa.tfvars file extentions. When we want to pass our tfvars file on cli we have to give a path to that variables file, depending which environment we want to use. 
+</p>
 
-When you define your dev.tf and qa.tf variables file they have to be inside of the tfvars directory because they are inside of the tfvars directory. If you want to keep them outside of tfvars directory you have to give dev.tfvars and qa.tfvars file extentions on the name of the files.
-
-When you pass your tfvars file on cli you have to give a path to that variables file which environment we want to use. 
 ```
--var-file=tfvars/dev.tf
+terraform apply -var-file=tfvars/dev.tf
 
 ```
 Variables precedence is which variable will take a priority when is given:
@@ -40,10 +45,16 @@ Variables precedence is which variable will take a priority when is given:
 4. Any *auto.tfvars or *.auto.tfvars.json files processed in lexical order of their filenames.
 5. Any -var and -var-file option on the command line in the order they are provided(this is including variables set by a terraform cloud workspace)
 
+### Notes 
 
+- When we change the size of the instance terraform doesn't delete the instance it will go stop the instance, resizes it and starts it again.
+
+- In our example with ssh-key before we try to copy ssh-key to our AWS account we need to create first, otherwise terraform will complain that on a given file there's no such a file.
 
 ## Useful links
 
 [Attributes Reference](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)
 
 [Create Resource Dependencies](https://learn.hashicorp.com/tutorials/terraform/dependencies)
+
+[Terraform variable types](https://www.terraform.io/docs/language/expressions/types.html)
