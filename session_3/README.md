@@ -21,7 +21,7 @@ In terraform you also can to reference to ```named values```  sush as:
 - Resources (aws_security_group.web_sg.id)
 - Child module outputs (module.rds_module.module_username)
 - Data sources (data.aws_instance.id)
-- file system and workspace info (terraform.workspace)
+- file system and workspace info ```file("user_data.sh")```, ```(terraform.workspace)```.
 - block-local values 
 
 The examples that we use earlier are called ```single bases```, when we use just single resource.
