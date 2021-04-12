@@ -72,3 +72,4 @@ In the example above we used the format function to get environment variable nam
 
 ### Diagram
 
+<img src="aws_image/diagram.png" alt="aws" width="800" height="500">
