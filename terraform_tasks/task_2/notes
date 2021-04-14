@@ -1,0 +1,21 @@
+
+
+
+
+
+
+
+#data "template_file" "user_data"  {
+#  template = file("web_userdata.sh")
+#  vars = {
+#    env = var.env
+#  }
+#}
+
+#data "aws_acm_certificate" "amazon_issued" {
+#  domain   = "nazydaisy.com"
+#  statuses = ["ISSUED"]
+#}
+#output "dns_name" {
+#  value = aws_route53_record.record.name
+#}
