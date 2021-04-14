@@ -91,7 +91,7 @@ variable "associate_public_ip_address" {
   type = bool
   description = "associate public ip address"
 }
-#
+
 #variable "zone_name" {
 #  description = "Name of route 53 zone"
 #  type        = string
