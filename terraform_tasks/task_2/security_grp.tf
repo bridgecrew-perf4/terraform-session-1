@@ -22,7 +22,7 @@ resource "aws_security_group_rule" "ssh_ingress" {
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = ["108.210.198.102/32"]
   security_group_id = aws_security_group.wordpress_sg.id
 }
 
