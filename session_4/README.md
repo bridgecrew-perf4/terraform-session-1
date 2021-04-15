@@ -66,6 +66,10 @@ In the example above we used the format function to get environment variable nam
 
 <img src="aws_image/diagram.png" alt="aws" width="800" height="500">
 
+### Exlanation of diagram
+
+Diagram above descirbes how we can deploy our resources using terraform-server on AWS cloud by giving a
+
 
 ### Useful links
 
