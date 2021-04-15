@@ -35,7 +35,7 @@ Data sources allow us to fetch or retrive pre-existing data or computed for use 
     --image-ids ami-0742b4e673072066f
 ```
 
-* hvm - means hardvare virtual machine
+* hvm - means hardware virtual machine
 
 ### What is format
 
