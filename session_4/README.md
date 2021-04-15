@@ -62,6 +62,11 @@ In the example above we used the format function to get environment variable nam
 
 - AMI is a regional resource, we use ami's depending on which region we want to create our EC2 resource.
 
+### Diagram
+
+<img src="aws_image/diagram.png" alt="aws" width="800" height="500">
+
+
 ### Useful links
 
 [Resource Blocks](https://www.terraform.io/docs/language/resources/syntax.html)
@@ -69,7 +74,3 @@ In the example above we used the format function to get environment variable nam
 [Data Sources](https://www.terraform.io/docs/language/data-sources/index.html)
 
 [Format Function](https://www.terraform.io/docs/language/functions/format.html)
-
-### Diagram
-
-<img src="aws_image/diagram.png" alt="aws" width="800" height="500">
