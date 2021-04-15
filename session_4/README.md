@@ -37,7 +37,7 @@ Data sources allow us to fetch or retrive pre-existing data or computed for use 
 
 * hvm - means hardware virtual machine
 
-### What is format
+### What is format?
 
 Format is a string function, we can use this function in many cases for example:
 ```
@@ -66,10 +66,42 @@ In the example above we used the format function to get environment variable nam
 
 <img src="aws_image/diagram.png" alt="aws" width="800" height="500">
 
-### Exlanation of diagram
+### Resources
 
-Diagram above descirbes how we can deploy our resources using terraform-server on AWS cloud by giving a
+- Web-instance
+- Security group for web-instance
+- Imported tf-key to AWS cloud
+- Data source for image id
 
+### Description
+
+Diagram above descirbes how we can deploy our infrastructure using virtual ```terraform-server``` on AWS cloud, by giving to that server ```tf-server-role```. We ssh into that server from our local machine and run all our commands from there. In this example we provision a web-instance (main.tf) with security group (sg.tf) both of them ```resource block```:
+```
+resource "aws_instance" "web" {
+  ................
+}
+
+resource "aws_security_group" "web_sg" {
+  description = "this is security group for web instance"
+  ................
+```
+
+and this server will be created with ```tf-key``` because during creation we also imported an ```tf-key``` from a ```~/.ssh/id_rsa.pub``` file of ```terraform-server``` to AWS cloud as it shown below:
+
+```
+resource "aws_key_pair" "tf_key" {
+  key_name   = "${var.env}-tf_key"
+  public_key = file("~/.ssh/id_rsa.pub")
+}
+```
+
+Another thing is an ```image_id``` for that we used ```data source block``` because we want to make our templates reusable.
+```
+data "aws_ami" "amazon_linux2" {
+  ...............
+}
+```
+And we used ```format function``` in a ```tags``` section of the web-istance resource block as it was described in the example above.
 
 ### Useful links
 
