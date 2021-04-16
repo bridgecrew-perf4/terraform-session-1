@@ -1,3 +1,4 @@
+# AMI for web-server
 data "aws_ami" "amazon_linux2" {
   most_recent = true
   owners      = ["amazon"]
@@ -18,4 +19,10 @@ data "aws_ami" "amazon_linux2" {
     name   = "root-device-type"
     values = ["ebs"]
   }
+}
+
+# Find a certificate that is issued
+data "aws_acm_certificate" "amazon_issued" {
+  domain   = "nazydaisy.com"
+  statuses = ["ISSUED"]
 }
