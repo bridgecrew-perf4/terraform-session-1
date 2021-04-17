@@ -19,6 +19,14 @@ resource "aws_security_group" "wordpress_sg" {
     cidr_blocks = [var.cidr_block]
   }
 
+  ingress {
+    description = "myslq_ingress"
+    from_port   = var.mysql_port
+    to_port     = var.mysql_port
+    protocol    =  var.ingress_protocol
+    security_groups = [aws_security_group.wordpress_db_sg.id]
+  }
+
   egress {
     from_port   = var.egress_port
     to_port     = var.egress_port
@@ -31,15 +39,6 @@ resource "aws_security_group" "wordpress_sg" {
     Environment = var.env
     Project     = var.project_name
   }
-}
-
-resource "aws_security_group_rule" "from_wp-web-sg_to_wpdb-sg" {
-  security_group_id        = aws_security_group.wordpress_sg.id
-  type                     = var.traffic_type
-  from_port                = var.mysql_port
-  to_port                  = var.mysql_port
-  protocol                 = var.ingress_protocol
-  source_security_group_id = aws_security_group.wordpress_db_sg.id
 }
 
 resource "aws_security_group" "wordpress_db_sg" {

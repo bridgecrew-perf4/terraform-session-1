@@ -1,12 +1,3 @@
-Security group was created in a default vpc , thats why i used vpc_id to 
-
-#data "template_file" "user_data"  {
-#  template = file("web_userdata.sh")
-#  vars = {
-#    env = var.env
-#  }
-#}
-
 #data "aws_acm_certificate" "amazon_issued" {
 #  domain   = "nazydaisy.com"
 #  statuses = ["ISSUED"]

@@ -116,11 +116,6 @@ variable "egress_port" {
   type        = number
 }
 
-variable "tcp_protocol" {
-  description = "tcp protocol"
-  type        = string
-}
-
 variable "ingress_protocol" {
   description = "intbound network"
   type        = string
