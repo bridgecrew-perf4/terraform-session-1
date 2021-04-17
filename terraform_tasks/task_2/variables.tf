@@ -1,5 +1,4 @@
 # VPC variables
-
 variable "aws_region" {
   type        = string
   description = "The region Terraform deploys your infra"
@@ -81,7 +80,6 @@ variable "priv_cidr3_subnet" {
 }
 
 # WordPress web variables
-
 variable "instance_type" {
   type        = string
   description = "instance type"
@@ -92,7 +90,53 @@ variable "associate_public_ip_address" {
   description = "associate public ip address"
 }
 
-#variable "zone_name" {
-#  description = "Name of route 53 zone"
-#  type        = string
-#}
+variable "zone_name" {
+  description = "Name of route 53 zone"
+  type        = string
+}
+
+# Security group variables
+variable "http_port" {
+  description = "httpd port"
+  type        = number
+}
+
+variable "ssh_port" {
+  description = "ssh port"
+  type        = number
+}
+
+variable "mysql_port" {
+  description = "mysql port"
+  type        = number
+}
+
+variable "egress_port" {
+  description = "incoming port"
+  type        = number
+}
+
+variable "tcp_protocol" {
+  description = "tcp protocol"
+  type        = string
+}
+
+variable "ingress_protocol" {
+  description = "intbound network"
+  type        = string
+}
+
+variable "egress_protocol" {
+  description = "outbound network"
+  type        = string
+}
+
+variable "cidr_block" {
+  description = "ingress/egress cidr block"
+  type        = string
+}
+
+variable "traffic_type" {
+  description = "ingress type"
+  type        = string 
+}
