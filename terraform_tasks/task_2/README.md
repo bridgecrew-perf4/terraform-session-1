@@ -55,7 +55,7 @@ The next step is security groups:
 
 #### Wordpress-database 
 
-Wordpress database will be created in private subnet with AMI Amazon LINUX 2 machine which terraform did get from ```data_source.tf``` and t2.micro instance type was used. User data will install mariadb, starts and enables it. Also instead of running ```mysql_secure_installation``` inside of wordpress-database I wrapped it inside of the ```sql_userdata.sh``` where mariadb will be installed inside of database securely, and give a root user new password (we will need it when we create database) it look like this: 
+Wordpress database will be created in public subnet with AMI Amazon LINUX 2 machine which terraform did get from ```data_source.tf``` and t2.micro instance type was used. User data will install mariadb, starts and enables it. Also instead of running ```mysql_secure_installation``` inside of wordpress-database I wrapped it inside of the ```sql_userdata.sh``` where mariadb will be installed inside of database securely, and give a root user new password (we will need it when we create database) it look like this: 
 ```
 #!/bin/bash 
 ..........
