@@ -86,7 +86,7 @@ variable "instance_type" {
 }
 
 variable "associate_public_ip_address" {
-  type = bool
+  type        = bool
   description = "associate public ip address"
 }
 
@@ -133,5 +133,5 @@ variable "cidr_block" {
 
 variable "traffic_type" {
   description = "ingress type"
-  type        = string 
+  type        = string
 }
