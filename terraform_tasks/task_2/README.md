@@ -26,12 +26,15 @@ Virtual Private Cloud (VPC)
 
 For the Network  part VPC with CIDR 10.0.0.0/16 was created with 3 public and 3 private subnets with CIDR blocks:
 
-Public subnet      Private subnet 
+Public subnet       
+- 10.0.1.0/24       
+- 10.0.2.0/24        
+- 10.0.3.0/24
 
-- 10.0.1.0/24        - 10.0.11.0/24
-- 10.0.2.0/24        - 10.0.12.0/24
-- 10.0.3.0/24        - 10.0.13.0/24
-
+Private subnet
+- 10.0.11.0/24
+- 10.0.12.0/24
+- 10.0.13.0/24
 After that Internet Gateway was created attached to VPC which brings the Internet.
 
 For Private subnets Internet comes with NAT Gateway it will be created with Elastic IP address (the reason behind it,if you want to updates your website it has to have static IP) which will attached to one of the public subnets, because in that manner private subnets won’t be open to the world it's secure.
