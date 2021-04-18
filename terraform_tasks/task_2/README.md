@@ -28,9 +28,9 @@ For the Network  part VPC with CIDR 10.0.0.0/16 was created with 3 public and 3 
 
 Public subnet      Private subnet 
 
-10.0.1.0/24        10.0.11.0/24
-10.0.2.0/24        10.0.12.0/24
-10.0.3.0/24        10.0.13.0/24
+- 10.0.1.0/24        - 10.0.11.0/24
+- 10.0.2.0/24        - 10.0.12.0/24
+- 10.0.3.0/24        - 10.0.13.0/24
 
 After that Internet Gateway was created attached to VPC which brings the Internet.
 
