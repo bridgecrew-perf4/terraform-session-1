@@ -6,12 +6,12 @@ resource "aws_instance" "wordpress_web" {
   associate_public_ip_address = var.associate_public_ip_address
   user_data                   = file("web_userdata.sh")
   key_name                    = aws_key_pair.terraform_server_key.key_name
-
-  tags = {
-    Name        = "${var.env}_wordpress_web"
-    Environment = var.env
-    Project     = var.project_name
-  }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}_wordpress_web"
+    }
+  )
 }
 
 resource "aws_key_pair" "terraform_server_key" {

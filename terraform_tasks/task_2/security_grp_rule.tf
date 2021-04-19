@@ -1,15 +1,14 @@
 # Wordpress web security group
-
 resource "aws_security_group" "wordpress_sg" {
   name        = "${var.env}_wordpress_sg"
   description = "Allow inbound traffic"
   vpc_id      = aws_vpc.my_vpc.id
-
-  tags = {
-    Name        = "${var.env}_wp_sg"
-    Environment = var.env
-    Project     = var.project_name
-  }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}_wp_sg"
+    }
+  )
 }
 resource "aws_security_group_rule" "http_ingress" {
   type              = "ingress"
@@ -48,17 +47,16 @@ resource "aws_security_group_rule" "egress" {
 }
 
 # Wordpress database security group
-
 resource "aws_security_group" "wordpress_db_sg" {
   name        = "${var.env}_wordpress_db_sg"
   description = "Allow inbound traffic to wordpress database"
   vpc_id      = aws_vpc.my_vpc.id
-
-  tags = {
-    Name        = "${var.env}_wpdb_sg"
-    Environment = var.env
-    Project     = var.project_name
-  }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}_wpdb_sg"
+    }
+  )
 }
 
 resource "aws_security_group_rule" "ssh_ingress_to_db" {
