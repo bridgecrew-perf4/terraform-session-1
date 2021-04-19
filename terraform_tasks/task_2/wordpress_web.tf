@@ -8,7 +8,7 @@ resource "aws_instance" "wordpress_web" {
   key_name                    = aws_key_pair.terraform_server_key.key_name
 
   tags = {
-    Name        = "${var.env}-wordpress_web"
+    Name        = "${var.env}_wordpress_web"
     Environment = var.env
     Project     = var.project_name
   }

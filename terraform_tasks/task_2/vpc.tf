@@ -5,7 +5,7 @@ resource "aws_vpc" "my_vpc" {
   enable_dns_hostnames = var.is_enabled_dns_hostnames
 
   tags = {
-    Name        = "${var.env}-vpc"
+    Name        = "${var.env}_vpc"
     Environment = var.env
     Project     = var.project_name
   }
@@ -17,7 +17,7 @@ resource "aws_subnet" "public_subnet_1" {
   availability_zone = var.aws_az_1a
 
   tags = {
-    Name        = "${var.env}-pub_sub1"
+    Name        = "${var.env}_pub_sub1"
     Environment = var.env
     Project     = var.project_name
   }
@@ -29,7 +29,7 @@ resource "aws_subnet" "public_subnet_2" {
   availability_zone = var.aws_az_1b
 
   tags = {
-    Name        = "${var.env}-pub_sub2"
+    Name        = "${var.env}_pub_sub2"
     Environment = var.env
     Project     = var.project_name
   }
@@ -41,7 +41,7 @@ resource "aws_subnet" "public_subnet_3" {
   availability_zone = var.aws_az_1c
 
   tags = {
-    Name        = "${var.env}-pub_sub3"
+    Name        = "${var.env}_pub_sub3"
     Environment = var.env
     Project     = var.project_name
   }
@@ -53,7 +53,7 @@ resource "aws_subnet" "private_subnet_1" {
   availability_zone = var.aws_az_1a
 
   tags = {
-    Name        = "${var.env}-priv_sub1"
+    Name        = "${var.env}_priv_sub1"
     Environment = var.env
     Project     = var.project_name
   }
@@ -65,7 +65,7 @@ resource "aws_subnet" "private_subnet_2" {
   availability_zone = var.aws_az_1b
 
   tags = {
-    Name        = "${var.env}-priv_sub2"
+    Name        = "${var.env}_priv_sub2"
     Environment = var.env
     Project     = var.project_name
   }
@@ -77,7 +77,7 @@ resource "aws_subnet" "private_subnet_3" {
   availability_zone = var.aws_az_1c
 
   tags = {
-    Name        = "${var.env}-priv_sub3"
+    Name        = "${var.env}_priv_sub3"
     Environment = var.env
     Project     = var.project_name
   }
@@ -87,7 +87,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.my_vpc.id
 
   tags = {
-    Name        = "${var.env}-igw"
+    Name        = "${var.env}_igw"
     Environment = var.env
     Project     = var.project_name
   }
@@ -102,7 +102,7 @@ resource "aws_route_table" "pub_rtb" {
   }
 
   tags = {
-    Name        = "${var.env}-pub_rtb"
+    Name        = "${var.env}_pub_rtb"
     Environment = var.env
     Project     = var.project_name
   }
@@ -123,22 +123,23 @@ resource "aws_route_table_association" "pub_sub3" {
   route_table_id = aws_route_table.pub_rtb.id
 }
 
-resource "aws_eip" "nat-gw-eip" {
+resource "aws_eip" "nat_gw_eip" {
   vpc = true
 
   tags = {
-    Name        = "${var.env}-eip"
+    Name        = "${var.env}_eip"
     Environment = var.env
     Project     = var.project_name
   }
 }
 
 resource "aws_nat_gateway" "nat_gw" {
-  allocation_id = aws_eip.nat-gw-eip.id
+  depends_on    = [aws_internet_gateway.igw]
+  allocation_id = aws_eip.nat_gw_eip.id
   subnet_id     = aws_subnet.public_subnet_1.id
 
   tags = {
-    Name        = "${var.env}-nat_gw"
+    Name        = "${var.env}_nat_gw"
     Environment = var.env
     Project     = var.project_name
   }
@@ -153,7 +154,7 @@ resource "aws_route_table" "private_rtb" {
   }
 
   tags = {
-    Name        = "${var.env}-private_rtb"
+    Name        = "${var.env}_private_rtb"
     Environment = var.env
     Project     = var.project_name
   }
