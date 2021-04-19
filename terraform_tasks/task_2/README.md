@@ -84,8 +84,8 @@ y
 EOF
 mysql -uroot -ppassword123<<MYSQL_SCRIPT
 CREATE DATABASE wordpressdb;
-CREATE USER wordpressuser@'${wordpress_private_ip}' IDENTIFIED BY 'redhat123';
-GRANT ALL PRIVILEGES ON wordpressdb.* TO wordpressuser@'${wordpress_private_ip}' IDENTIFIED BY 'redhat123';
+CREATE USER wordpressuser@'${wordpress_private_ip}' IDENTIFIED BY 'password123';
+GRANT ALL PRIVILEGES ON wordpressdb.* TO wordpressuser@'${wordpress_private_ip}' IDENTIFIED BY 'password123';
 FLUSH PRIVILEGES;
 EXIT;
 MYSQL_SCRIPT
