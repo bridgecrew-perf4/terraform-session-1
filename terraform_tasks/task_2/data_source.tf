@@ -20,3 +20,11 @@ data "aws_ami" "amazon_linux2" {
     values = ["ebs"]
   }
 }
+
+data "template_file" "sql_userdata" {
+  template = file("./sql_userdata.sh")
+  vars = {
+    wordpress_private_ip = aws_instance.wordpress_web.private_ip
+    description          = "variable named wordpress_private_ip will get the private_ip of wordpress_web"
+  }
+}
