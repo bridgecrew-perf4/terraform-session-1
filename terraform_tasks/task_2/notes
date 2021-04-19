@@ -1,7 +1,0 @@
-#data "aws_acm_certificate" "amazon_issued" {
-#  domain   = "nazydaisy.com"
-#  statuses = ["ISSUED"]
-#}
-#output "dns_name" {
-#  value = aws_route53_record.record.name
-#}

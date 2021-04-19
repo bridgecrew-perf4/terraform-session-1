@@ -24,24 +24,28 @@ Virtual Private Cloud (VPC)
 
 - Route 53
 
+<p>
 For the Network  part VPC with CIDR 10.0.0.0/16 was created with 3 public and 3 private subnets with CIDR blocks:
-
-Public subnet       
+</p>
+Public subnet cird blocks       
 - 10.0.1.0/24       
 - 10.0.2.0/24        
 - 10.0.3.0/24
 
-Private subnet
+Private subnet cidr blocks
 - 10.0.11.0/24
 - 10.0.12.0/24
 - 10.0.13.0/24
 
+<p>
 After that Internet Gateway was created attached to VPC which brings the Internet.
-
+</p>
+<p>
 For Private subnets Internet comes with NAT Gateway it will be created with Elastic IP address (the reason behind it,if you want to updates your website it has to have static IP) which will attached to one of the public subnets, because in that manner private subnets won’t be open to the world it's secure.
-
+</p>
+<p>
 The next resource is Route tables (public and private) 3 public subnets will be assosiated with Public-RT attached with Internet Gateway and 3 private subnets will be assosiated with Private-RT which is attached to Nat Gateway.
-
+</p>
 The next step is security groups:
 
 - Wordpress-web security group with open ports:
@@ -59,22 +63,36 @@ The next step is security groups:
 
 #### Wordpress-database 
 
-Wordpress database will be created in public subnet with AMI Amazon LINUX 2 machine which terraform did get from ```data_source.tf``` and t2.micro instance type was used. User data will install mariadb, starts and enables it. Also instead of running ```mysql_secure_installation``` inside of wordpress-database I wrapped it inside of the ```sql_userdata.sh``` where mariadb will be installed inside of database securely, and give a root user new password (we will need it when we create database) it look like this: 
+Wordpress_database will be created in a private subnet with AMI Amazon LINUX 2 image id, which terraform will get from ```data_source.tf``` and instance type will be t2.micro. In user data  section we used ```data source template_file```, which will get ```sql_userdata.sh```, it will install mariadb, starts and enables it, as well as runs ```mysql_secure_installation``` for secure installation of mariadb (it gives a root user new password, we will need it when we create database later), and in addition  to that we also wrapped database creation inside of that script too ```mysql -uroot -ppassword123```. So basically our script will install and create a database while booting, and it looks like this:
+
 ```
 #!/bin/bash 
-..........
+sudo yum update -y
+sudo hostnamectl set-hostname wordpress-db
+sudo yum install mariadb-server -y
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
 sudo mysql_secure_installation <<EOF
 
 y
-redhat123
-redhat123
+password123
+password123
 y
 y
 y
 y
 EOF
+mysql -uroot -ppassword123<<MYSQL_SCRIPT
+CREATE DATABASE wordpressdb;
+CREATE USER wordpressuser@'${wordpress_private_ip}' IDENTIFIED BY 'redhat123';
+GRANT ALL PRIVILEGES ON wordpressdb.* TO wordpressuser@'${wordpress_private_ip}' IDENTIFIED BY 'redhat123';
+FLUSH PRIVILEGES;
+EXIT;
+MYSQL_SCRIPT
+sudo systemctl restart mariadb
 ```
-where ```y``` means yes and it answers questions below:
+In the script above we mentioned '${wordpress_private_ip}' this is variable was described in data source template_file. It will be used to create a wordpressuser for wordpress_web in wordpress_database instance. And also ```y``` means ```yes``` and it answers the questions below:
+
 ```
 [root@wordpress-db ~]# mysql_secure_installation
 
@@ -136,7 +154,8 @@ All done!  If you've completed all of the above steps, your MariaDB
 installation should now be secure.
 ```
 
-After that when we ssh into webserver-database and run ```mysql -u root -p``` and give created roots password and create a database:
+Since we already created our database without getting inside of wordpress_database server, we don't have to follow the instructions below. But if we didn't wrap script above,  our next step would be to ssh into webserver-database and run ```mysql -u root -p``` and give root user password and create a database. The process looks like this:
+
 ```
 [root@wordpress-db ~]# mysql -u root -p
 Enter password: 
@@ -151,10 +170,10 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 MariaDB [(none)]> CREATE DATABASE wordpressdb;
 Query OK, 1 row affected (0.00 sec)
 
-MariaDB [(none)]> CREATE USER admin@10.0.1.94 IDENTIFIED BY 'redhat123';
+MariaDB [(none)]> CREATE USER wordpressuser@'${wordpress_web_server_private_ip}' IDENTIFIED BY 'passoword123';
 Query OK, 0 rows affected (0.00 sec)
 
-MariaDB [(none)]> GRANT ALL PRIVILEGES ON wordpressdb.*  TO admin@10.0.1.199 IDENTIFIED BY 'redhat123';
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON wordpressdb.*  TO wordpressuser@${wordpress_web_server_private_ip} IDENTIFIED BY 'password123';
 Query OK, 0 rows affected (0.00 sec)
 
 MariaDB [(none)]> FLUSH PRIVILEGES;
@@ -167,14 +186,14 @@ And restart mariadb.
 
 #### Wordpress-web
 
-Same as wordpress-database, for wordpress-web Amazon LINUX 2 machine (AMI) and t2.micro instance type was used and bash script was added in the user data section ```web_userdata.sh```. This bash script will download php, httpd, mysql-agent and Wordpress package and unzippes it.
+Same as wordpress-database wordpress-web will be created with Amazon LINUX 2 machine (AMI) and instance type t2.micro, and bash script was added in the user data section ```web_userdata.sh```. This bash script will install a LAMP stack (skipping database installation) php, httpd, mysql-agent and Wordpress package and unzippes it.
 
 #### Route 53
 
-Route_53.tf created "A" record www.nazydaisy.com in AWS with the public IP of the wordpress-web instance.
+Route_53.tf created "A" record www.nazydaisy.com in AWS with the public IP of the wordpress_web instance.
 
-With that info  when  you go to www.nazydaisy.com and entered database name "wordpressdb" , user that I created "wordpressuser" and "password", and database private ip address. You should be able to get cofigure WordPress website.
+With that info  when  you go to www.nazydaisy.com and entered database name "wordpressdb" , user that I created "wordpressuser" and "password123", and database private ip address. You should be able to get cofigure WordPress website.
 
 #### Notes
 
-- Important thing keep in mind when we want our security groups to be creatd in our VPC we have to let know terraform about it, otherwise it gets created in default VPC.
+- Important thing keep in mind when we want our security groups to be created in our VPC we have to let know terraform about it, otherwise it gets created in default VPC.
