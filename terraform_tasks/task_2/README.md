@@ -50,7 +50,7 @@ The next step is security groups:
 
 - Wordpress-web security group with open ports:
 
-1. Port 22 from ```terraform-server``` (we can ssh into this server because it was created it with ssh-key of ```terraform-server```)
+1. Port 22 from ```terraform-server``` (we can ssh into this server because it was created it with ssh-key of ```terraform-server```). We didn't open port 22 in this example, because we wrapped all commands into ```sql_userdata.sh```.
 2. Port 80 to ```0.0.0.0/0``` we want our webserver to be accesible to our customers.
 3. Port 3306 to ```wordpress-db security group```
 4. Egress open to "0.0.0.0/0" (in terraform you have to specify egress rule)

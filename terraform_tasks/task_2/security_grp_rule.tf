@@ -12,17 +12,17 @@ resource "aws_security_group" "wordpress_sg" {
 }
 
 resource "aws_security_group_rule" "wordpress_web_ingress" {
-  count = length(var.web_sg_tcp_ports)
-  type = var.in_traffic_type
-  protocol = var.ingress_protocol
-  from_port = element(var.web_sg_tcp_ports, count.index)
-  to_port = element(var.web_sg_tcp_ports, count.index)
-  cidr_blocks = [var.cidr_block]
+  count             = length(var.web_sg_tcp_ports)
+  type              = var.in_traffic_type
+  protocol          = var.ingress_protocol
+  from_port         = element(var.web_sg_tcp_ports, count.index)
+  to_port           = element(var.web_sg_tcp_ports, count.index)
+  cidr_blocks       = [var.cidr_block]
   security_group_id = aws_security_group.wordpress_sg.id
 }
 
 resource "aws_security_group_rule" "mysql_to_wpdb_sg" {
-  count = length(var.webdb_sg_tcp_ports)
+  count                    = length(var.webdb_sg_tcp_ports)
   security_group_id        = aws_security_group.wordpress_sg.id
   type                     = var.in_traffic_type
   from_port                = element(var.webdb_sg_tcp_ports, 0)
@@ -54,7 +54,7 @@ resource "aws_security_group" "wordpress_db_sg" {
 }
 
 resource "aws_security_group_rule" "mysql_to_wp_sg" {
-  count = length(var.webdb_sg_tcp_ports)
+  count                    = length(var.webdb_sg_tcp_ports)
   security_group_id        = aws_security_group.wordpress_db_sg.id
   type                     = var.in_traffic_type
   from_port                = element(var.webdb_sg_tcp_ports, 0)
