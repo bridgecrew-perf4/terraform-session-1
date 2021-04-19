@@ -28,10 +28,10 @@ variable "outbound_rule" {
   description = "outbound rule of sg"
 }
 
-variable "cidr_blocks" {
-  type        = list(string)
-  description = "cidr block of ingress/egress"
-}
+#variable "cidr_blocks" {
+#  type        = list(string)
+#  description = "cidr block of ingress/egress"
+#}
 
 variable "sg_name" {
   type        = string
@@ -46,4 +46,12 @@ variable "ingress_protocol" {
 variable "egress_protocol" {
   type        = string
   description = "egress protocol"
+}
+
+variable "web_sg_tcp_ports" {
+  type = list(string)
+}
+
+variable "web_sg_tcp_ports_cidr" {
+  type = list(string)
 }
