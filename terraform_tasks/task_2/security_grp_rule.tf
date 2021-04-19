@@ -1,4 +1,5 @@
 # Wordpress web security group
+
 resource "aws_security_group" "wordpress_sg" {
   name        = "${var.env}_wordpress_sg"
   description = "Allow inbound traffic"
@@ -28,7 +29,7 @@ resource "aws_security_group_rule" "ssh_ingress" {
   security_group_id = aws_security_group.wordpress_sg.id
 }
 
-resource "aws_security_group_rule" "mysql_to_wpdb-sg" {
+resource "aws_security_group_rule" "mysql_to_wpdb_sg" {
   security_group_id        = aws_security_group.wordpress_sg.id
   type                     = "ingress"
   from_port                = 3306
@@ -47,6 +48,7 @@ resource "aws_security_group_rule" "egress" {
 }
 
 # Wordpress database security group
+
 resource "aws_security_group" "wordpress_db_sg" {
   name        = "${var.env}_wordpress_db_sg"
   description = "Allow inbound traffic to wordpress database"
@@ -59,7 +61,7 @@ resource "aws_security_group" "wordpress_db_sg" {
   }
 }
 
-resource "aws_security_group_rule" "ssh_ingress-to_db" {
+resource "aws_security_group_rule" "ssh_ingress_to_db" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
@@ -68,7 +70,7 @@ resource "aws_security_group_rule" "ssh_ingress-to_db" {
   security_group_id = aws_security_group.wordpress_db_sg.id
 }
 
-resource "aws_security_group_rule" "mysql_to_wp-sg" {
+resource "aws_security_group_rule" "mysql_to_wp_sg" {
   security_group_id        = aws_security_group.wordpress_db_sg.id
   type                     = "ingress"
   from_port                = 3306
