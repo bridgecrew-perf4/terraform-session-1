@@ -1,6 +1,6 @@
-# In this template for_each function with local variables were used for creation 
-# of subnets and and route table association. In our case we are working with map value, 
-# although for_each can work with string value as well as with map value. We are passing
+# In this template "for_each" function with "local" variables were used for creation 
+# of subnets and and route table association. In our case we are working with "map" value, 
+# although "for_each" can work with "string" value as well as with "map" value. We are passing
 # separate settings for each subnet, while using the keys/values for generating subnets.
 
 # VPC 
