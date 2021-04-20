@@ -1,6 +1,7 @@
-# In this template for_each function with local variables were used in the creation of resources. 
-# In our case we are working with map, we are passing separate settings for each subnet, while using 
-# the keys/values for generating subnets.
+# In this template for_each function with local variables were used for creation 
+# of subnets and and route table association. In our case we are working with map value, 
+# although for_each can work with string value as well as with map value. We are passing
+# separate settings for each subnet, while using the keys/values for generating subnets.
 
 # VPC 
 resource "aws_vpc" "my_vpc" {
@@ -18,7 +19,7 @@ resource "aws_vpc" "my_vpc" {
 
 # Public Subnets
 resource "aws_subnet" "public_subnet_" {
-  for_each = local.public_subnet
+  for_each          = local.public_subnet
   vpc_id            = aws_vpc.my_vpc.id
   availability_zone = each.value.availability_zone
   cidr_block        = each.value.cidr_block
@@ -29,17 +30,10 @@ resource "aws_subnet" "public_subnet_" {
     }
   )
 }
-locals {
-  public_subnet = {
-    1 = { availability_zone = "us-east-1a", cidr_block = "10.0.1.0/24" },
-    2 = { availability_zone = "us-east-1b", cidr_block = "10.0.2.0/24" },
-    3 = { availability_zone = "us-east-1c", cidr_block = "10.0.3.0/24" }
-  }
-}
 
 # Private Subnets
 resource "aws_subnet" "private_subnet_" {
-  for_each = local.private_subnet
+  for_each          = local.private_subnet
   vpc_id            = aws_vpc.my_vpc.id
   availability_zone = each.value.availability_zone
   cidr_block        = each.value.cidr_block
@@ -49,14 +43,6 @@ resource "aws_subnet" "private_subnet_" {
       Name = "${var.env}_priv_sub_${each.key}"
     }
   )
-}
-
-locals {
-  private_subnet = {
-    1 = { availability_zone = "us-east-1a", cidr_block = "10.0.11.0/24" },
-    2 = { availability_zone = "us-east-1b", cidr_block = "10.0.12.0/24" },
-    3 = { availability_zone = "us-east-1c", cidr_block = "10.0.13.0/24" }
-  }
 }
 
 # Internet Gateway
@@ -89,7 +75,7 @@ resource "aws_route_table" "pub_rtb" {
 
 # Public Route Table Association
 resource "aws_route_table_association" "pub_subnet" {
-  for_each = local.public_subnet
+  for_each       = local.public_subnet
   subnet_id      = aws_subnet.public_subnet_[each.key].id
   route_table_id = aws_route_table.pub_rtb.id
 }
@@ -136,7 +122,7 @@ resource "aws_route_table" "private_rtb" {
 
 # Private Route Table Association
 resource "aws_route_table_association" "priv_subnet" {
-  for_each = local.private_subnet
+  for_each       = local.private_subnet
   subnet_id      = aws_subnet.private_subnet_[each.key].id
   route_table_id = aws_route_table.private_rtb.id
 }
