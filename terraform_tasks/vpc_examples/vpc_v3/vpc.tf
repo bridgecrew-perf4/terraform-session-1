@@ -1,7 +1,6 @@
-# In this template for_each function with local variables were used in the creation of
-# resources. for_each can work with a string or a map values. In our case we are
-# working with map, here we can pass separate settings for each subnet, while using 
-# the keys for generating subnets.
+# In this template for_each function with local variables were used in the creation of resources. 
+# In our case we are working with map, we are passing separate settings for each subnet, while using 
+# the keys/values for generating subnets.
 
 # VPC 
 resource "aws_vpc" "my_vpc" {
