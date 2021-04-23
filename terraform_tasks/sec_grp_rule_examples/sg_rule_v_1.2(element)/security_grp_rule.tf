@@ -1,3 +1,7 @@
+# In this version of 1.2 security group rule template, "element" and "length" functions 
+# were used, with one security group rule resource block 2 rules will created, for tags
+# we used locals in order to avoid repeating of the same tags.
+
 # Webserver security group
 resource "aws_security_group" "web_sg" {
   name        = "${var.env}_web_sg"

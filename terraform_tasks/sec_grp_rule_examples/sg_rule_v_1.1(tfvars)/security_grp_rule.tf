@@ -1,3 +1,8 @@
+# This security group rule is the simple version of configuring your security group
+# rule resource block, using variables and tfvars/dev.tf file. Using variables makes
+# your template reusable, where all the given variable values can be changed in just
+# in tfvars/dev.tf file.
+
 # Webserver  security group
 resource "aws_security_group" "web_sg" {
   name        = "${var.env}_web_sg"
