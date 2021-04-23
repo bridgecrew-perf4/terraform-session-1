@@ -1,1 +1,0 @@
-When we store our tfstate file in S3 bucket it allows us to be more flexible for working with a team. S3 bucket have to exist before we run terraform apply, we want to store our state file in  that bucket.  
