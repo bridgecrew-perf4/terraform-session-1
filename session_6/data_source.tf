@@ -1,11 +1,3 @@
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnet_ids" "default_subnet" {
-  vpc_id = data.aws_vpc.default.id  # we are fetching subnet id from the default vpc
-}
-
 data "template_file" "webserver" {
   template = file("user_data.sh")
   vars = {
