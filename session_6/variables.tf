@@ -36,6 +36,12 @@ variable "instance_type" {
   description = "this is instance type"
 }
 
+# Route 53 variables
+variable "zone_name" {
+  description = "Name of route 53 zone"
+  type        = string
+}
+
 # Tags variables
 variable "env" {
   type        = string
