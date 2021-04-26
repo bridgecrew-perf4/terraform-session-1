@@ -52,15 +52,6 @@ resource "aws_security_group" "lb_sg" {
   vpc_id      = aws_vpc.my_vpc.id
 }
 
-# resource "aws_security_group_rule" "lb_ingress" {
-#   type              = "ingress"
-#   from_port         = 80
-#   to_port           = 80
-#   protocol          = "tcp"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = aws_security_group.lb_sg.id
-# }
-
 resource "aws_security_group_rule" "lb_ingress" {
   for_each          = local.ingress_rules
   type              = each.value.type
