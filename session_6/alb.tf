@@ -4,7 +4,11 @@ resource "aws_lb" "web_lb" {
   internal           = false # you don't make variables
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
-  subnets            = [aws_subnet.public_subnet[1].id, aws_subnet.public_subnet[2].id, aws_subnet.public_subnet[3].id, ]
+  subnets            = [
+    aws_subnet.public_subnet[1].id, 
+    aws_subnet.public_subnet[2].id, 
+    aws_subnet.public_subnet[3].id, 
+  ]
 }
 
 # Target group
@@ -40,8 +44,8 @@ resource "aws_lb_listener" "https_listener" {
   load_balancer_arn = aws_lb.web_lb.arn
   port              = "443"
   protocol          = "HTTPS"
-  #ssl_policy        = "ELBSecurityPolicy-2016-08"
-  #certificate_arn   = data.aws_acm_certificate.my_certificate.arn
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = data.aws_acm_certificate.my_certificate.arn
 
   default_action {
     type             = "forward"
