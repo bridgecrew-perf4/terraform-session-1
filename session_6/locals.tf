@@ -30,29 +30,31 @@ locals {
 
 locals {
   cloudwatch_alarm = {
-    scale_out = { comparison_operator = "GreaterThanOrEqualToThreshold",
-      alarm_name         = "${var.env}_scale_out_alarm"
-      evaluation_periods = "2",
-      protocol           = "tcp",
-      metric_name        = "CPUUtilization",
-      namespace          = "AWS/EC2",
-      period             = "120",
-      statistic          = "Average"
-      threshold          = "60"
-      alarm_description  = "This metric monitors webserver cpu utilization for scaling out"
-      alarm_actions      = [aws_autoscaling_policy.asg_scale_policy[1].arn]
+    scale_out = {
+      comparison_operator = "GreaterThanOrEqualToThreshold",
+      alarm_name          = "${var.env}_scale_out_alarm",
+      evaluation_periods  = "2",
+      protocol            = "tcp",
+      metric_name         = "CPUUtilization",
+      namespace           = "AWS/EC2",
+      period              = "120",
+      statistic           = "Average"
+      threshold           = "60"
+      alarm_description   = "This metric monitors webserver cpu utilization for scaling out"
+      alarm_actions       = [aws_autoscaling_policy.asg_scale_policy[1].arn]
     },
-    scale_in = { comparison_operator = "LessThanOrEqualToThreshold",
-      alarm_name         = "${var.env}_scale_in_alarm"
-      evaluation_periods = "2",
-      protocol           = "tcp",
-      metric_name        = "CPUUtilization",
-      namespace          = "AWS/EC2",
-      period             = "120",
-      statistic          = "Average"
-      threshold          = "40"
-      alarm_description  = "This metric monitors webserver cpu utilization for scaling in"
-      alarm_actions      = [aws_autoscaling_policy.asg_scale_policy[2].arn]
+    scale_in = {
+      comparison_operator = "LessThanOrEqualToThreshold",
+      alarm_name          = "${var.env}_scale_in_alarm",
+      evaluation_periods  = "2",
+      protocol            = "tcp",
+      metric_name         = "CPUUtilization",
+      namespace           = "AWS/EC2",
+      period              = "120",
+      statistic           = "Average",
+      threshold           = "40",
+      alarm_description   = "This metric monitors webserver cpu utilization for scaling in",
+      alarm_actions       = [aws_autoscaling_policy.asg_scale_policy[2].arn]
     },
   }
 }
@@ -63,15 +65,14 @@ locals {
       scaling_adjustment     = 1,
       adjustment_type        = "ChangeInCapacity",
       cooldown               = 300,
-      autoscaling_group_name = aws_autoscaling_group.web_asg.name
+      autoscaling_group_name = aws_autoscaling_group.web_asg.name,
       policy_type            = "SimpleScaling"
     },
     2 = { name = "${var.env}_asg_in_policy",
-      scaling_adjustment     = 1,
+      scaling_adjustment     = -1,
       adjustment_type        = "ChangeInCapacity",
       cooldown               = 300,
-      description            = "http_ingress",
-      autoscaling_group_name = aws_autoscaling_group.web_asg.name
+      autoscaling_group_name = aws_autoscaling_group.web_asg.name,
       policy_type            = "SimpleScaling"
     },
   }
