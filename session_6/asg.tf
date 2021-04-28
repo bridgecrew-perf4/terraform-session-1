@@ -1,15 +1,15 @@
 resource "aws_autoscaling_group" "web_asg" {
   name = "${var.env}_web_asg"
 
-  max_size         = 5
-  min_size         = 1
-  desired_capacity = 3
+  max_size = 3
+  min_size = 1
+  #desired_capacity = 3
 
-  health_check_grace_period = 300
-  health_check_type         = "ELB" # "EC2" 
+  health_check_grace_period = 60 #300 by default
+  health_check_type         = "ELB" # or "EC2" 
   force_delete              = true
   target_group_arns         = [aws_lb_target_group.web_tg.arn]
-  launch_configuration = aws_launch_configuration.web_lc.name
+  launch_configuration      = aws_launch_configuration.web_lc.name
 
   vpc_zone_identifier = [
     aws_subnet.public_subnet[1].id,
