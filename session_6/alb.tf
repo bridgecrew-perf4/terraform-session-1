@@ -1,7 +1,7 @@
 # Application load balancer
 resource "aws_lb" "web_lb" {
   name               = "${var.env}-web-lb"
-  internal           = false # you don't make variables
+  internal           = false # internet-facing = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
   subnets = [

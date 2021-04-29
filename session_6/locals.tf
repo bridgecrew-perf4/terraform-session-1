@@ -32,7 +32,7 @@ locals {
   cloudwatch_alarm = {
     scale_out = {
       comparison_operator = "GreaterThanOrEqualToThreshold",
-      alarm_name          = "${var.env}_scale_out_alarm",
+      alarm_name          = "${var.env}_add_capacity",
       evaluation_periods  = "2",
       protocol            = "tcp",
       metric_name         = "CPUUtilization",
@@ -45,7 +45,7 @@ locals {
     },
     scale_in = {
       comparison_operator = "LessThanOrEqualToThreshold",
-      alarm_name          = "${var.env}_scale_in_alarm",
+      alarm_name          = "${var.env}_remove_capacity",
       evaluation_periods  = "2",
       protocol            = "tcp",
       metric_name         = "CPUUtilization",
@@ -59,21 +59,21 @@ locals {
   }
 }
 
-locals {
-  asg_scale_policy = {
-    1 = { name = "${var.env}_asg_out_policy",
-      scaling_adjustment     = 1,
-      adjustment_type        = "ChangeInCapacity",
-      cooldown               = 300,
-      autoscaling_group_name = aws_autoscaling_group.web_asg.name,
-      policy_type            = "SimpleScaling"
-    },
-    2 = { name = "${var.env}_asg_in_policy",
-      scaling_adjustment     = -1,
-      adjustment_type        = "ChangeInCapacity",
-      cooldown               = 300,
-      autoscaling_group_name = aws_autoscaling_group.web_asg.name,
-      policy_type            = "SimpleScaling"
-    },
-  }
-}
+# locals {
+#   asg_scale_policy = {
+#     1 = { name = "${var.env}_asg_out_policy",
+#       scaling_adjustment     = 1,
+#       adjustment_type        = "ChangeInCapacity",
+#       cooldown               = 300,
+#       autoscaling_group_name = aws_autoscaling_group.web_asg.name,
+#       policy_type            = "SimpleScaling"
+#     },
+#     2 = { name = "${var.env}_asg_in_policy",
+#       scaling_adjustment     = -1,
+#       adjustment_type        = "ChangeInCapacity",
+#       cooldown               = 300,
+#       autoscaling_group_name = aws_autoscaling_group.web_asg.name,
+#       policy_type            = "SimpleScaling"
+#     },
+#   }
+# }

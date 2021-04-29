@@ -18,7 +18,7 @@ resource "aws_autoscaling_group" "web_asg" {
   ]
 }
 
-resource "aws_autoscaling_attachment" "web_lb_asg_attachment" {
-  alb_target_group_arn   = aws_lb_target_group.web_tg.arn
-  autoscaling_group_name = aws_autoscaling_group.web_asg.id
-}
+# resource "aws_autoscaling_attachment" "web_lb_asg_attachment" {
+#   alb_target_group_arn   = aws_lb_target_group.web_tg.arn
+#   autoscaling_group_name = aws_autoscaling_group.web_asg.id
+# }
