@@ -66,7 +66,7 @@ Count value has to be known before terraform performs any actions. In our exampl
 
 ### "for_each" meta-argument
 
-The second option of creating the similar resources with one block is to use for_each meta-argument with value, key functions. In the example below we used locals for defining values for our subnets and for_each for looping and creating 3 subnets with those items.
+The second option of creating the similar resources with one block is to use for_each meta-argument with value, key functions. In the example below we used locals for defining values for our subnets and for_each is looping and creating 3 subnets with those values.
 ```
 # Public Subnets
 
