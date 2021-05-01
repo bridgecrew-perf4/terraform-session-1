@@ -2,10 +2,40 @@
 
 Terraform is plugin based tool and all plugins are in ```.terraform``` folder, whenever you run ```terraform init``` it will initialize the working directory and install all needed plugins. Additional to ```.terraform``` folder ```.terraform.lock.hcl``` file gets created as well, which prevents from getting corrupted of your ```terraform.tfstate``` file.
 
-# In this template "for_each" function with "local" variables were used for creation 
-# of subnets and and route table association. In our case we are working with "map" value, 
-# although "for_each" can work with "string" value as well as with "map" value. We are passing
-# separate settings for each subnet, while using the keys/values for generating subnets.
+This project provisions the next resources:
+
+### Networking
+
+- VPC
+- 3 Public and Private Subnets
+- Elastic IP 
+- Nat Gateway
+- Internet Gateway
+- Route table association (public/private)
+
+### Security Group Rules
+ 
+- Web-server security group
+- Application Load Balancer Security group
+
+### Application Load Balancer 
+
+### Application
+
+- Launch Configuration
+- Autoscaling group (frontend)
+- RDS (backend)
+
+### DNS
+
+- ACM Certification
+- Route 53
+
+This project contains the ```frontend``` and ```backend``` of application, where we 
+
+In this template "for_each" function with "local" variables were used for creation of subnets and and route table association. In our case we are working with "map" value,although "for_each" can work with "string" value as well as with "map" value. We are passing separate settings for each subnet, while using the keys/values for generating subnets.
+
+We created two autoscaling group policies ```Simple scaling```, one of them will add an instance if  ```CPU Utilization``` of the instance goes over 60% and another one will remove an instance if CPU utilization goes down 40%. 
 
 adjustment_type:
 
