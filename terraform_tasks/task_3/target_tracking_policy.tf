@@ -67,3 +67,5 @@
 #   alarm_description = "This metric monitors webserver cpu utilization for scaling out"
 #   alarm_actions     = [aws_autoscaling_policy.asg_scale_in_target_tracking_policy.arn]
 # }
+
+#We strongly recommend that you use a target tracking scaling policy to scale on a metric like average CPU utilization or the RequestCountPerTarget metric from the Application Load Balancer.
