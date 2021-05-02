@@ -16,8 +16,7 @@ resource "aws_autoscaling_group" "web_asg" {
     aws_subnet.private_subnet[2].id,
     aws_subnet.private_subnet[3].id
   ]
-
-
+  
   tag {
      key                 = "Name"
      value               = "${var.env}_web_asg"
