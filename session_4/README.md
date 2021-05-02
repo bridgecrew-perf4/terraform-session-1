@@ -80,21 +80,17 @@ Diagram above descirbes how we can deploy our infrastructure using virtual ```te
 resource "aws_instance" "web" {
   ................
 }
-
 resource "aws_security_group" "web_sg" {
   description = "this is security group for web instance"
   ................
 ```
-
 and this server will be created with ```tf-key``` because during creation we also imported an ```tf-key``` from a ```~/.ssh/id_rsa.pub``` file of ```terraform-server``` to AWS cloud as it shown below:
-
 ```
 resource "aws_key_pair" "tf_key" {
   key_name   = "${var.env}-tf_key"
   public_key = file("~/.ssh/id_rsa.pub")
 }
 ```
-
 Another thing is an ```image_id``` for that we used ```data source block``` because we want to make our templates reusable.
 ```
 data "aws_ami" "amazon_linux2" {

@@ -2,6 +2,8 @@
 
 ### Description
 
+Terraform is plugin based tool and all plugins are in ```.terraform``` folder, whenever you run ```terraform init``` it will initialize the working directory and install all needed plugins. In addition to ```.terraform``` folder ```.terraform.lock.hcl``` file gets created as well, which prevents from getting corrupted of your local ```terraform.tfstate``` file.
+
 To start we created an EC2 instance which we named ```Terraform server``` we created that instance with our ssh-key, so we can ssh into it and run commands and install Terraform (binary). To do that we go to this website:
 
 ```
@@ -46,11 +48,11 @@ terraform -version
 ```
 your output should look like this:
  ```
- Terraform v0.14.9
+Terraform v0.14.9
  ```
 And you are all set!
 
-  After that we created a directory session_2, where we created our first configuration file ```main.tf``` (all terraform files have .tf extension) which has an EC2 resource, to provision that instance with ```Terraform server``` we have to give credentials such as ```access-key``` and ```secret-key```, but instead we created an EC2 role and attached it to it and we are good to go. When provision resources with terraform we also have to create ```providres.tf``` file that's how terraform knows which provider we are using and which cloud provider we want to provision our resource.
+After that we created a directory session_2, where we created our first configuration file ```main.tf``` (allterraform files have .tf extension) which has an EC2 resource, to provision that instance with ```Terraformserver``` we have to give credentials such as ```access-key``` and ```secret-key```, but instead we createdan EC2 role and attached it to it and we are good to go. When provision resources with terraform we also haveto create ```providres.tf``` file that's how terraform knows which provider we are using and which cloudprovider we want to provision our resource.
 
 ## Notes
 
