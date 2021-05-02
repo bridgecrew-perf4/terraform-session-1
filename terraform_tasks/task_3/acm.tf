@@ -4,10 +4,10 @@ data "aws_acm_certificate" "my_certificate" {
   statuses = ["ISSUED"]
 }
 
-resource "aws_lb_listener_certificate" "acm_attachment" {
-  listener_arn    = aws_lb_listener.https_listener.arn
-  certificate_arn = data.aws_acm_certificate.my_certificate.arn
-}
+# resource "aws_lb_listener_certificate" "acm_attachment" {
+#   listener_arn    = aws_lb_listener.https_listener.arn
+#   certificate_arn = data.aws_acm_certificate.my_certificate.arn
+# }
 
 data "aws_route53_zone" "my_zone" {
   name = var.zone_name
