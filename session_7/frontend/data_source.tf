@@ -37,3 +37,12 @@ data "aws_ami" "amazon_linux2" {
     values = ["ebs"]
   }
 }
+
+data "terraform_remote_state" "rds" {
+  backend = "s3"
+  config = {
+    bucket = "nazy-tf-bucket"
+    key = "session_7/backend.tfstate"
+    region = "us-east-1"
+  }
+}
