@@ -9,6 +9,12 @@ resource "aws_lb" "web_lb" {
     aws_subnet.public_subnet[2].id,
     aws_subnet.public_subnet[3].id,
   ]
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}_lb_sg"
+    }
+  ) 
 }
 
 # Target group
@@ -58,6 +64,13 @@ resource "aws_security_group" "lb_sg" {
   name        = "${var.env}_lb_sg"
   description = "allow http traffic"
   vpc_id      = aws_vpc.my_vpc.id
+  
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}_lb_sg"
+    }
+  )
 }
 
 resource "aws_security_group_rule" "lb_ingress" {

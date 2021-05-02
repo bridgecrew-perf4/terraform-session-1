@@ -12,9 +12,9 @@ resource "aws_autoscaling_group" "web_asg" {
   launch_configuration      = aws_launch_configuration.web_lc.name
 
   vpc_zone_identifier = [
-    aws_subnet.public_subnet[1].id,
-    aws_subnet.public_subnet[2].id,
-    aws_subnet.public_subnet[3].id
+    aws_subnet.private_subnet[1].id,
+    aws_subnet.private_subnet[2].id,
+    aws_subnet.private_subnet[3].id
   ]
 }
 
