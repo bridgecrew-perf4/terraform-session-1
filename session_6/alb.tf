@@ -4,11 +4,14 @@ resource "aws_lb" "web_lb" {
   internal           = false # internet-facing = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
-  subnets = [
-    aws_subnet.public_subnet[1].id,
-    aws_subnet.public_subnet[2].id,
-    aws_subnet.public_subnet[3].id,
-  ]
+  subnets = data.aws_subnet_ids.default.ids
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}-web-lb"
+    }
+  )
 }
 
 # Target group
@@ -16,37 +19,27 @@ resource "aws_lb_target_group" "web_tg" {
   name     = "${var.env}-lb-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.my_vpc.id
+  vpc_id   = data.aws_vpc.default.id
 
   health_check {
     path    = "/"
     port    = 80
     matcher = "200"
   }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}-web-tg"
+    }
+  )
 }
 
-# HTTP listeners rule
 resource "aws_lb_listener" "http_listener" {
-  depends_on        = []
+  depends_on = [  ]
   load_balancer_arn = aws_lb.web_lb.arn
-  port              = "80"
+  port              = "80" 
   protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.web_tg.arn
-  }
-}
-
-# HTTPS listeners rule
-resource "aws_lb_listener" "https_listener" {
-  depends_on        = []
-  load_balancer_arn = aws_lb.web_lb.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = data.aws_acm_certificate.my_certificate.arn
-
+  
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.web_tg.arn
@@ -57,7 +50,13 @@ resource "aws_lb_listener" "https_listener" {
 resource "aws_security_group" "lb_sg" {
   name        = "${var.env}_lb_sg"
   description = "allow http traffic"
-  vpc_id      = aws_vpc.my_vpc.id
+  vpc_id      = data.aws_vpc.default.id
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}_web_lb_sg"
+    }
+  )
 }
 
 resource "aws_security_group_rule" "lb_ingress" {

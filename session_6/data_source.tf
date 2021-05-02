@@ -5,6 +5,14 @@ data "template_file" "webserver" {
   }
 }
 
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnet_ids" "default" {
+  vpc_id = data.aws_vpc.default.id
+}
+
 data "aws_ami" "amazon_linux2" {
   most_recent = true
   owners      = ["amazon"]
