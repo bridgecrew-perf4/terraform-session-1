@@ -5,6 +5,10 @@ data "template_file" "webserver" {
   }
 }
 
+data "aws_route53_zone" "my_zone" {
+  name = var.zone_name
+}
+
 data "aws_ami" "amazon_linux2" {
   most_recent = true
   owners      = ["amazon"]
