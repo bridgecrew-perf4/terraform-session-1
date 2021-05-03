@@ -35,9 +35,9 @@ This Project contains cofinguration files for the next resources:
 
 ### Description
 
-We a creating our own VPC where we used for_each meta-argument with locals and also we used ```key```, ```value``` and  ```merge``` functions, using listed above helped us to create three subnets with one resource block and three route table association with another resource block. In this case we are working with ```map``` collection type constraints for the attribute values, however ```for_each``` can work with ```list``` and ```set``` types as well. We are passing different values for each subnet in  ```locals.tf``` and ```for_each``` is itirating and getting values for each subnet and generating multiple subnets as well as route table association. If you want to use hardcoded VPC or use count meta-argument go here [terraform_vpc_examples](https://github.com/nazy67/terraform_vpc_examples), you will find an example of VPC's.
+We a creating our own VPC where we used for_each meta-argument with locals and also we used ```key```, ```value``` and  ```merge``` functions, using listed above helped us to create three subnets with one resource block and three route table association with another resource block. In this case we are working with ```map``` collection type constraints for the attribute values, however ```for_each``` can work with ```list``` and `set` types as well. We are passing different values for each subnet in `locals.tf` and `for_each` is itirating and getting values for each subnet and generating multiple subnets as well as route table association. If you want to use hardcoded VPC or use count meta-argument go here [terraform_vpc_examples](https://github.com/nazy67/terraform_vpc_examples), you will find an example of VPC's.
 
-This project will cover the ```frontend``` of application which refers to the user interface, while ```backend``` means the server, application and database that work behind the scenes to deliver information to the customers.
+This project will cover the ```frontend``` of application which refers to the user interface, while ```backend``` means the database-server, application and database that work behind the scenes to deliver information to the customers.
 
 Application Load Balancer was configured with Target Group and Listeners rules 80(redirected to 443) and 443 (fowarded to target group). It's internet facing(we want our website to be available for our users), target group gets created first and will load balancer will be provision. For the Litener rule 443 we attached our existing ```ACM Certificate``` that we fetched in in a data_source.tf file.   
 
@@ -54,11 +54,6 @@ The following arguments are only available to "SimpleScaling" type policies:
 Our state file will be stored in S3 bucket as we configured in backend.tf file, it is very common to store your state file remotely when you work with a team.
 
 "A" type Route 53 record was created with alias of Application Load Balancer, 
-
-
-
-
-
 
 ### Notes
 
