@@ -5,23 +5,31 @@ resource "aws_db_instance" "rds_db" {
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
   identifier           = "${var.env}-instance"
-  name                 = "wordpress_db" # don't use variable
-  username             = "admin" # don't use variable
+  name                 = "wordpress_db" # don't use variables
+  username             = "admin" # don't use variables
   password             = random_password.password.result
   skip_final_snapshot  = var.snapshot 
   final_snapshot_identifier = var.snapshot == true ? null : "${var.env}-snapshot"
   vpc_security_group_ids = [ aws_security_group.rds_sg.id ]
   publicly_accessible = var.env == "dev" ? true : false  # = false, same thing
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}_rds_db"
+    }
+  )
 }
-
 
 resource "aws_security_group" "rds_sg" {
   name        = "${var.env}_rds_sg"
   description = "allow from MySQL"
 
-  tags = {
-    Name = "${var.env}_rds_sg"
-  }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}_rds_sg"
+    }
+  )
 }
 
 resource "aws_security_group_rule" "db_ingress" {
@@ -29,15 +37,24 @@ resource "aws_security_group_rule" "db_ingress" {
   from_port         = 3306
   to_port           = 3306
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  self = true
   security_group_id = aws_security_group.rds_sg.id
 }
 
-resource "aws_security_group_rule" "local_laptop" {
-  type              = "egress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.rds_sg.id
-}
+# resource "aws_security_group_rule" "db_sg_to_web_sg" {
+#   type              = "ingress"
+#   from_port         = 3306
+#   to_port           = 3306
+#   protocol          = "tcp"
+#   source_security_group_id = module.aws_security_group.web_sg.id
+#   security_group_id = aws_security_group.rds_sg.id
+# }
+
+# resource "aws_security_group_rule" "egress" {
+#   type              = "egress"
+#   from_port         = 0
+#   to_port           = 0
+#   protocol          = "tcp"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.rds_sg.id
+# }
