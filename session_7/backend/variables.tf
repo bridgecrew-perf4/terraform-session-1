@@ -1,9 +1,9 @@
 variable "env" {
-  type = string
+  type    = string
   default = "dev"
 }
 
 variable "snapshot" {
-  type = bool
+  type    = bool
   default = true
 }
