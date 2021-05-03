@@ -14,7 +14,7 @@ resource "aws_lb" "web_lb" {
     {
       Name = "${var.env}_lb_sg"
     }
-  ) 
+  )
 }
 
 # Target group
@@ -68,7 +68,7 @@ resource "aws_security_group" "lb_sg" {
   name        = "${var.env}_lb_sg"
   description = "allow http traffic"
   vpc_id      = aws_vpc.my_vpc.id
-  
+
   tags = merge(
     local.common_tags,
     {

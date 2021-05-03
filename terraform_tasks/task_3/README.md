@@ -1,6 +1,6 @@
-## Terraform project wordpress (frontend)
+## Terraform project Wordpress (frontend)
 
-This Project contains cofinguration files for the next resources:
+This Project contains cofiguration files of the resources:
 
 ### Networking
 
@@ -35,7 +35,7 @@ This Project contains cofinguration files for the next resources:
 
 ### Description
 
-We a creating our own VPC where we used for_each meta-argument with locals and also we used ```key```, ```value``` and  ```merge``` functions, using listed above helped us to create three subnets with one resource block and three route table association with another resource block. In this case we are working with ```map``` collection type constraints for the attribute values, however ```for_each``` can work with ```list``` and `set` types as well. We are passing different values for each subnet in `locals.tf` and `for_each` is itirating and getting values for each subnet and generating multiple subnets as well as route table association. If you want to use hardcoded VPC or use count meta-argument go here [terraform_vpc_examples](https://github.com/nazy67/terraform_vpc_examples), you will find an example of VPC's.
+We a creating our own VPC where we used `for_each` and`locals` and  with combination  and also we used ```key```, ```value``` and  ```merge``` functions, using listed above helped us to create three subnets with one resource block and three route table association with another resource block. In this case we are working with ```map``` collection type constraints for the attribute values, however ```for_each``` can work with ```list``` and `set` types as well. We are passing different values for each subnet in `locals.tf` and `for_each` is itirating and getting values for each subnet and generating multiple subnets as well as route table association. If you want to use hardcoded VPC or use count meta-argument go here [terraform_vpc_examples](https://github.com/nazy67/terraform_vpc_examples), you will find an example of VPC's.
 
 This project will cover the ```frontend``` of application which refers to the user interface, while ```backend``` means the database-server, application and database that work behind the scenes to deliver information to the customers.
 
@@ -51,7 +51,7 @@ The following arguments are only available to "SimpleScaling" type policies:
 - cooldown - (Optional) The amount of time, in seconds, after a scaling activity completes and before the next scaling activity can start.
 - scaling_adjustment - (Optional) The number of instances by which to scale. adjustment_type determines the interpretation of this number (e.g., as an absolute number or as a percentage of the existing Auto Scaling group size). A positive increment adds to the current capacity and a negative value removes from the current capacity.
 
-Our state file will be stored in S3 bucket as we configured in backend.tf file, it is very common to store your state file remotely when you work with a team.
+Our state file will be stored in S3 bucket as we configured in backend.tf file, it is common to store your state file remotely when you work with a team.
 
 "A" type Route 53 record was created with alias of Application Load Balancer, 
 
