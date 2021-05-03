@@ -1,11 +1,11 @@
 # Providers variables
 variable "aws_region" {
-  type = string
+  type        = string
   description = "the region where resources will be provisioned"
 }
 # Launch configuration variables
 variable "instance_type" {
-  type    = string
+  type = string
 }
 
 # Tags variables
