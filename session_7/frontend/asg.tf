@@ -9,13 +9,13 @@ resource "aws_autoscaling_group" "web_asg" {
   force_delete              = true
   launch_configuration      = aws_launch_configuration.web_lc.name
   vpc_zone_identifier       = data.aws_subnet_ids.default.ids
-  
+
   instance_refresh {
     strategy = "Rolling"
     preferences {
       min_healthy_percentage = 50
     }
-  } 
+  }
 }
 
 # Create a new ALB Target Group attachment

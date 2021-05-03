@@ -4,7 +4,7 @@ resource "aws_lb" "web_lb" {
   internal           = false # internet-facing = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
-  subnets = data.aws_subnet_ids.default.ids
+  subnets            = data.aws_subnet_ids.default.ids
 
   tags = merge(
     local.common_tags,
@@ -35,11 +35,11 @@ resource "aws_lb_target_group" "web_tg" {
 }
 
 resource "aws_lb_listener" "http_listener" {
-  depends_on = [  ]
+  depends_on        = []
   load_balancer_arn = aws_lb.web_lb.arn
-  port              = "80" 
+  port              = "80"
   protocol          = "HTTP"
-  
+
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.web_tg.arn
