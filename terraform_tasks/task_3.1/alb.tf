@@ -1,10 +1,12 @@
 # Application load balancer
 resource "aws_lb" "web_lb" {
   name               = "${var.env}-web-lb"
-  internal           = false # internet-facing = true
+  internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
-  subnets            = ["aws_subnet.public_subnet[*].id"]
+  subnets            = [aws_subnet.public_subnet[0].id,
+                        aws_subnet.public_subnet[1].id,
+                        aws_subnet.public_subnet[2].id]
   tags = merge(
     local.common_tags,
     {
@@ -87,7 +89,7 @@ resource "aws_security_group_rule" "lb_egress" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
-  protocol          = "-1" # -1 means everything
+  protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.lb_sg.id
 }
