@@ -4,9 +4,7 @@ resource "aws_lb" "web_lb" {
   internal           = false # internet-facing = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
-  subnets            = [aws_subnet.public_subnet[0].id,
-                        aws_subnet.public_subnet[1].id,
-                        aws_subnet.public_subnet[2].id]
+  subnets            = ["aws_subnet.public_subnet[*].id"]
   tags = merge(
     local.common_tags,
     {
