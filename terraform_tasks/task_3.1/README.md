@@ -25,7 +25,7 @@ This project will cover the ```frontend``` of application which is user interfac
 
 ### Application
 
-- Launch Configuration
+- Launch Template
 - Auto Scaling Group
 - Target tracking scaling policy (scale in/out).
 
@@ -55,9 +55,9 @@ data "aws_acm_certificate" "my_certificate" {
 }
 ```
 
-- Launch Configuration and Auto Scaling Group
+- Launch Template and Auto Scaling Group
 
-We configured Launch Configuration first as part of Auto Scaling Group, it will be  created with ```amazon linux 2``` image id, which data source fetched from Amazon since it's existion resource.  And Launch Configuraion has user_data.sh script, which installs enables and starts Apache, and has a very simple index.html file with greeting in our website. In Auto Scaling Group we specified that we want our instances to be on private subnets (it has elastic IP), otherwise we have to associate public IP address if instances in public subnets. The last resource blockd in Auto Scaling Group is attachment of ASG to ALB (through Target group), and ALB will provide the traffic to Private Subnets where our targeted Instances are sitting.
+We configured Launch Template first as part of Auto Scaling Group, it will be  created with ```amazon linux 2``` image id, which data source fetched from Amazon since it's existion resource.  And Launch Template has user_data.sh script, which installs enables and starts Apache, and has a very simple index.html file with greeting in our website. In Auto Scaling Group we specified that we want our instances to be on private subnets (it has elastic IP), otherwise we have to associate public IP address if instances in public subnets. The last resource blockd in Auto Scaling Group is attachment of ASG to ALB (through Target group), and ALB will provide the traffic to Private Subnets where our targeted Instances are sitting.
 ASG has a different way of tagging, it requres map of tags, but with the help of  dynamic block we creted tags this way,
 ```
   tag {
