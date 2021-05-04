@@ -78,9 +78,9 @@ ASG has a different way of tagging, it requres map of tags, but with the help of
 ```
 If you want to read about it more check out [Dynamic tagging](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each).
 
-- Auto Scaling Policies (scale in/out) and Cloud Watch Alarm.
+- Simple Scaling policy (scale in/out) and Cloud Watch Alarm.
 
-We created two Autoscaling policies with type `Simple scaling`, one of them will add (scale out) an instance if  ```CPU Utilization``` of the instance goes over 60% and another one will remove (scale in) an instance if CPU utilization goes down 40%. With that we also created two more resources `cloudwatch_metric_alarm` which will alarm us if we have overloaded instances or not enough CPU utilazed instances, that's how we can keep a track when instances are added and removed.    
+We created two Simple Scaling policies with type `Simple scaling`, one of them will add (scale out) an instance if  ```CPU Utilization``` of the instance goes over 60% and another one will remove (scale in) an instance if CPU utilization goes down 40%. With that we also created two more resources `cloudwatch_metric_alarm` which will alarm us if we have overloaded instances or not enough CPU utilazed instances, that's how we can keep a track when instances are added and removed.    
 
 The following arguments are only available to "SimpleScaling" type policies:
 
