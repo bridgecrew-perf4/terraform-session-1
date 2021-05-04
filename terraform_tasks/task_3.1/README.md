@@ -17,7 +17,8 @@ This project will cover the ```frontend``` of application which is user interfac
 - Web-server Security Group For Launch configuration
 
 #### Application Load Balancer
- 
+
+- Application Load Balancer
 - Target Group:
   - HTTP Listener
   - HTTPS Listener
@@ -25,9 +26,8 @@ This project will cover the ```frontend``` of application which is user interfac
 ### Application
 
 - Launch Configuration
-- Autoscaling group (frontend)
-  - Auto Scaling Policies (scale in/out)
-  - Cloud Watch Alarm
+- Auto Scaling Group
+- Target tracking scaling policy (scale in/out).
 
 ### DNS
 
