@@ -56,7 +56,6 @@ module "source_sg_for_rds_sg" {
   aws_region        = "us-east-1"
   instance_type     = "t2.micro"
   env               = "dev"
-  project_name      = "wordpress"
 }
 
 # resource "aws_security_group_rule" "egress" {
