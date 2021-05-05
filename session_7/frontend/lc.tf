@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "mysql_to_db" {
   from_port                = 3306
   to_port                  = 3306
   protocol                 = "tcp"
-  source_security_group_id = data.terraform_remote_state.rds.outputs.rds_sg_id
+  # source_security_group_id = data.terraform_remote_state.rds.outputs.rds_sg_id
   security_group_id        = aws_security_group.web_sg.id
 }
 resource "aws_security_group_rule" "web_egress" {
