@@ -1,4 +1,4 @@
-## Terraform 2 tier application project
+# Terraform 2 tier application project
 
 In this project we separated our `frontend` and `backend` in separate folders, because usually it gets complicated to manage both in one folder, we don't want any changes in backend to be effected by frontend.
 
