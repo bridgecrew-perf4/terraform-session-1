@@ -5,7 +5,7 @@
 #   }
 # }
 data "template_file" "user_data" {
-  template = file("template_file/user_data.sh")
+  template = filebase64("${path.module}/template_file/user_data.sh")
   vars = {
     env = var.env
   }
