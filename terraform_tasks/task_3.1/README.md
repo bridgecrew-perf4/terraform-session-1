@@ -82,6 +82,8 @@ If you want to read about it more check out [Dynamic tagging](https://www.hashic
 
 AWS strongly recommends to use a Target tracking scaling policy to scale on a metric like average CPU utilization or the RequestCountPerTarget metric from the Application Load Balancer. With target tracking policy AWS will be create and manage cloud watch alarm. [Target tracking scaling policies for Amazon EC2 Auto Scaling](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html)
 
+<img src="images/cloudwatch_alarm.png" alt="aws" width="700" height="200">
+
 - Route 53 record.
 
 "A" (IPv4 and some AWS resources) type Route 53 record was created which will route traffic to alias Application Load Balancer with `Simple routing policy`. For that we fetched an existing zone name in data_source.tf and we were able to get zone_id from it, keep in mind that in AWS zone name always ends with `.` like `nazydaisy.com.`.
