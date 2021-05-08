@@ -80,7 +80,7 @@ If you want to read about it more check out [Dynamic tagging](https://www.hashic
 
 - Target tracking scaling policy (scale in/out).
 
-AWS strongly recommends to use a Target tracking scaling policy to scale on a metric like average CPU utilization or the RequestCountPerTarget metric from the Application Load Balancer. With target tracking policy AWS will be create and manage cloud watch alarm. [Target tracking scaling policies for Amazon EC2 Auto Scaling](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html)
+AWS strongly recommends to use a Target tracking scaling policy to scale on a metric like average CPU utilization or the RequestCountPerTarget metric from the Application Load Balancer. With target tracking policy AWS will create and manage cloudwatch alarm. [Target tracking scaling policies for Amazon EC2 Auto Scaling](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html)
 
 <img src="images/cloudwatch_alarm.png" alt="aws" width="700" height="200">
 
