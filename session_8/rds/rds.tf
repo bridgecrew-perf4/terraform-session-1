@@ -23,7 +23,7 @@ resource "aws_db_instance" "rds_db" {
 resource "null_resource" "tables" {
   provisioner "local-exec" {
     command = <<-EOF
-                mysql -h "${aws_db_instance.rds_db.address}" -u "${aws_db_instance.rds_db.username}" -p < "db.sql"
+                mysql -h "${aws_db_instance.rds_db.address}" -u "${aws_db_instance.rds_db.username}" < "db.sql"
                 EOF
     environment = {
       MYSQL_PWD = random_password.password.result
