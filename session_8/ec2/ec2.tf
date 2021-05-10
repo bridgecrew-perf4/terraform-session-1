@@ -4,19 +4,35 @@ resource "aws_instance" "web_server" {
   instance_type          = var.instance_type                   # variable
   key_name               = aws_key_pair.tf_key.key_name        # resource reference to key pair
   vpc_security_group_ids = [aws_security_group.web_sg.id]      # resource reference to security group 
-  tags = local.common_tags
+  tags                   = local.common_tags
 
-  provisioner "file" {     # when we wrap it inside of the ec2 block it will be like user data
-    source = "index.html"
-    destination = "/tmp/index.html"  # we are putting under tmp because we don't have var/www/hmtl/index.html we didn't install apache yet
-  }  
+  provisioner "file" { # when we wrap it inside of the ec2 block it will be like user data
+    source      = "index.html"
+    destination = "/tmp/index.html" # we are putting under tmp because we don't have var/www/hmtl/index.html we didn't install apache yet
+  }
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    host        = self.public_ip
+    private_key = file("~/.ssh/id_rsa") # Terraform will go to remote machine and establish connection with private key matching with public key, which was already created with public key of the local machine
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum install httpd -y",
+      "sudo cp /tmp/index.html /var/www/html/index.html",
+      "sudo systemctl enable httpd",
+      "sudo systemctl start httpd"
+    ]
+
     connection {
-      type = "ssh"
-      user = "ec2-user"
-      host = self.public_ip
+      type        = "ssh"
+      user        = "ec2-user"
+      host        = self.public_ip
       private_key = file("~/.ssh/id_rsa") # Terraform will go to remote machine and establish connection with private key matching with public key, which was already created with public key of the local machine
     }
   }
+}
 
 # Key Pair
 resource "aws_key_pair" "tf_key" {
