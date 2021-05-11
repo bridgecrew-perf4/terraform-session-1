@@ -1,19 +1,78 @@
-# Terraform 2 tier application project
+# Terraform 2 tier application WordPress Project
 
-In this project we separated our `frontend` and `backend` in separate folders, because usually it gets complicated to manage both in one folder, we don't want any changes in backend to be effected by frontend.
+In this project we separated our `frontend` and `backend` in separate folders, because usually it gets complicated to manage both in one folder, we don't want any changes made in backend to be effected by frontend.
 
 ### RDS (backend)
 
-Lets talk about our `backend` directory, since we don't manage RDS database we don't even know where it gets provisioned [Relational Database Service (RDS) is managed by AWS](https://aws.amazon.com/rds/?did=ft_card&trk=ft_card). We just specify which engine we want it to run, version of the engine, instance_class and other attributes. 
-Security group configured with 3306 is open to self and webserver security group, which gets fetched from the webserver security group module.
-For tagging we used `local.common_tags` and merged it with the resource unique name.
-Backend of our RDS database is stored remotely in s3 bucket `nazy-tf-bucket`, `session_7/backend.tfstate` file.
+Lets talk about our `backend` directory, since we don't manage RDS database we don't even know where it gets provisioned [Relational Database Service (RDS) is managed by AWS](https://aws.amazon.com/rds/?did=ft_card&trk=ft_card). We just specify which engine we want it to run, version of the engine, instance_class and other attributes.
+
+- RDS Security group configured with 3306 is open to self and referenced to webserver security group. We didn't create egress rule for RDS security group, because we don't manage our RDS and database doesn't initiate connections, so nothing outbound should need to be allowed.
+```
+resource "aws_security_group" "rds_sg"{
+  .....................
+}
+resource "aws_security_group_rule" "mysql_to_web_sg" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.web_sg.id
+  security_group_id        = aws_security_group.rds_sg.id
+}
+```
+
+- Webserver security group was created with ports 80 to ALB, 3306 to RDS database and an egress rule "-1" open to the world. We are creating webserver security group in backend folder, because we will provision RDS (backend) first and in webserver we fetch some outputs from the remote backend of the RDS state file.
+```
+resource "aws_security_group" "web_sg" {
+  .............................
+}
+resource "aws_security_group_rule" "mysql_to_rds_sg" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.rds_sg.id
+  security_group_id        = aws_security_group.web_sg.id
+}
+```
+
+For tagging we used `local.common_tags` and merged it with the resources unique name.
+Backend of our RDS database is stored remotely in s3 bucket called `nazy-tf-bucket`, `session_7/backend.tfstate` file.
+```
+terraform {
+  backend "s3" {
+    bucket = "nazy-tf-bucket"
+    key    = "session_7/backend.tfstate"
+    region = "us-east-1"
+  }
+}
+```
 
 ### Webserver (frontend)
 
-Since we are working with Application, we have `Application Load Balancer` which provides the traffic to the subnets where our instances are sitting. As we know load balancer has to have a `Target group` first, for that we created target group with `Listeners rule HTTP` and Security group for load balancer with ports `80` ingress `0.0.0.0/0`, we didnt create egress rule, because as it was said above we don't manage our RDS. Our ALB is open to the world because we want our users to have access to it, that's why it's internet-facing.
+- Application Load Balancer
 
-We configured Auto Scaling Group as a part of frontend, but first we need create Launch Configuration, it was created with `amazon linux 2` image id. And it has user_data.sh script, which will run during bootstrapping.
+Since we are working with Application, we have `Application Load Balancer` which provides the traffic to the Availability Zones, where our registered targets are sitting. As we know load balancer has to have a `Target group` first, for that we created target group with `Listeners rule HTTP`. Our ALB's security group configured with ingress open port `80` open to `0.0.0.0/0` and egress rule open to the world,   because we want our users to have access to our website and that's why it's internet-facing.
+```
+resource "aws_lb" "web_lb" {
+  name               = "${var.env}-web-lb"
+  internal           = false # internet-facing = true
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.lb_sg.id]
+  subnets            = data.aws_subnet_ids.default.ids
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.env}-web-lb"
+    }
+  )
+}
+```
+
+- Autoscaling Group and Launch Configuration.
+
+Auto Scaling Group is a part of the frontend and for it's creation first we need configure Launch Configuration, it was created with `amazon linux 2` image id. And it has user_data.sh script, which will run during bootstrapping.
 ```
 #!/bin/bash
 sudo yum update -y
@@ -29,10 +88,54 @@ sudo cp -r wordpress/* /var/www/html
 sudo chown -R apache:apache /var/www/html
 sudo systemctl restart httpd
 ```
-Webserver security group was created with ports 80 to ALB, 3306 to RDS database and an egress rule "-1". And the last resource to complete ASG is `aws_autoscaling_attachment` which connecnts our ALB(through Target group) to ASG.
-Same as RDS backend of webserver is stored remotely in the same s3 bucket `nazy-tf-bucket` but different file frontend.tfstate. `data_source` file has all the existing data fetching that we wanted to use in our configuration files.
-Our `locals.tf` contains local tags and ingress rules for security group. It would be helpful if we had several ingress rules open like `443` as additional to `80` open to `0.0.0.0/0`, but in this case it's not that efficient.
-In `outputs.tf` we have some outputs that we fetched from the backend folder, and dns name of ALB, so we don't have to go to the AWS console each time when we want to use it. The last file we is `variables.tf`, it has all the variables that we want to be adjusted depending on the environment, or different cases. The values for the variables are stored in `tfavars/dev.tf` file. 
+
+And the last resource to complete ASG is `aws_autoscaling_attachment` which connects our ALB(through Target group) to ASG.
+
+```
+resource "aws_autoscaling_attachment" "web_attachment" {
+  autoscaling_group_name = aws_autoscaling_group.web_asg.id
+  alb_target_group_arn   = aws_lb_target_group.web_tg.arn
+}
+```
+
+Same as RDS (backend) state file, Webserver (frontend) state file also stored remotely in the same s3 bucket `nazy-tf-bucket` but different file frontend.tfstate. 
+```
+terraform {
+  backend "s3" {
+    bucket = "nazy-tf-bucket"
+    key    = "session_7/frontend.tfstate"
+    region = "us-east-1"
+  }
+}
+```
+`data_source` file has all the existing data sources, that we are fetching and to using in our configuration files. One of important data_source is when we fetch the state file of RDS from the S3 bucket, where we are storing the backend files of our resources.
+```
+data "terraform_remote_state" "rds" {
+  backend = "s3"
+  config = {
+    bucket = "nazy-tf-bucket"
+    key    = "session_7/backend.tfstate"
+    region = "us-east-1"
+  }
+}
+```
+And used it fetch the Launch Configuration's security group, but before we have to output it first in the RDS (backend) folder.
+```
+output "web_sg_id" {
+  value = aws_security_group.web_sg.id
+}
+```
+```
+resource "aws_launch_configuration" "web_lc" {
+  name            = "${var.env}_web_lc"
+  image_id        = data.aws_ami.amazon_linux2.id
+  instance_type   = var.instance_type
+  user_data       = data.template_file.user_data.rendered  
+  security_groups = [data.terraform_remote_state.rds.outputs.web_sg_id]  # here
+}
+```
+
+In `outputs.tf` we have some outputs that we fetched from the backend folders remote state file, and DNS name of ALB, so we don't have to go to the AWS console each time when we want to use it. The last file we is `variables.tf`, it has all the variables that we want to be adjusted depending on the environment, or different cases. The values for the variables are stored in `tfavars/dev.tf` file. 
 
 ### Tips and tricks in Terraform with outputs, locals, conditional expression and equality operators for boolean values.
 
@@ -45,7 +148,7 @@ In `outputs.tf` we have some outputs that we fetched from the backend folder, an
 
 ### Outputs in Terraform
 
-##### First example of output usage.
+##### Example of output usage.
 
 In order to get the outputs in frontend from the backend folder such as database_name, database_password or database_username we need to do the next steps:
 
@@ -55,7 +158,7 @@ In order to get the outputs in frontend from the backend folder such as database
 
 3. Then create ```outputs.tf``` in ```frontend``` folder, on the value for the outputs we will refer to ```data "terraform_remote_state" "rds" {...}```, and terraform will fetch the data that we want to retrive from there. It is more clear when it shown below;
 
-Backend ```outputs.tf```,
+Backend `outputs.tf`,
 ```
 output "rds_password" {
   value = random_password.password.result
@@ -69,7 +172,7 @@ output "rds_db_username" {
   value = aws_db_instance.rds_db.username
 }
 ```
-```data_source.tf``` in frontend folder,
+`data_source.tf` in frontend folder,
 ```
 .........
 data "terraform_remote_state" "rds" {
@@ -81,7 +184,7 @@ data "terraform_remote_state" "rds" {
   }
 }
 ```
-Frontend outputs.tf,
+Frontend `outputs.tf`,
 ```
 output "rds_db_name" {
   value = data.terraform_remote_state.rds.outputs.rds_db_name
@@ -93,19 +196,6 @@ output "rds_db_username" {
 
 output "rds_db_password" {
   value = data.terraform_remote_state.rds.outputs.rds_password
-}
-```
-##### The second example of outputs usage. 
-
-Another example of outputs usage is when we want fetch the database security group id for ```source_security_group_id``` in webserver security group ingress (3306)rule. For that we again refer to remote backend.tfstate file (```data "terraform_remote_state" "rds" {...}```) and terraform will get that id and creates the rule as it shown here,
-
-```web_sg``` security group rule mysql,
-```
-resource "aws_security_group_rule" "mysql_to_db" {
-  type              = "ingress"
-  .................
-  source_security_group_id = data.terraform_remote_state.rds.outputs.rds_sg_id 
-  security_group_id = aws_security_group.web_sg.id
 }
 ```
 ### Locals in Terraform
@@ -172,7 +262,3 @@ publicly_accessible  =  var.env == "dev" ? true : false  # true bs our env is "d
 }
 ```
 Which means if it's `dev` environment make publicly accessible (because we want dev team to have access to the database to manage it), if not don't make publicly accessible. 
-
-### Modules in Terraform
-
-But for the RDS security group we also need to create another rule 3306 going to web_sg 
