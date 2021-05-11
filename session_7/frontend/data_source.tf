@@ -1,15 +1,10 @@
-# data "template_file" "webserver" {
-#   template = file("user_data.sh")
-#   vars = {
-#     env = var.env
-#   }
-# }
 data "template_file" "user_data" {
-  template = filebase64("${path.module}/template_file/user_data.sh")
+  template = file("template_file/user_data.sh")
   vars = {
     env = var.env
   }
 }
+
 data "aws_vpc" "default" {
   default = true
 }
