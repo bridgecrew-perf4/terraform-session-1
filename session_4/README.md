@@ -1,4 +1,4 @@
-### Resources block
+# Resources block
 
 Resource blocks in terraform are the most important part Terraform, because every resource block describes the infrastructure that we want to provision, such as VPC, EC2 or DNS records. In a resource block we declare a resource of type ("aws_instance") with a name ("my_instance"), we also call them labels. This name is used to refer to this resource from inside of the same directory or call it from the parent module.
 
@@ -9,13 +9,13 @@ Within the resource block we configure arguments for the resource itself such as
 key_name = aws_key_pair.tf_key.key_name
 ```
 
-### Resource Types
+## Resource Types
 
-#### Providers
+### Providers
 
 Providers in terraform provides for example AWS offers a collection of resource types they usually provides resources for  AWS cloud or on-premises infrastructure platforms. Providers are distributed separately from Terraform itself, but Terraform can automatically install most providers when initializing a working directory. Terraform usually installs plugins based on a resource type's name. I providers file we can describe multiple configurations of a provider, when we want to create our resources  for example in a different region we must use meta-argument like ```alias``` from the provider configuration.
 
-#### Meta-Arguments
+### Meta-Arguments
 
 The following meta-arguments are documented on separate pages:
 
@@ -26,7 +26,7 @@ The following meta-arguments are documented on separate pages:
 - lifecycle, for lifecycle customizations
 - provisioner and connection, for taking extra actions after resource creation 
  
-### Data source
+## Data source
 
 Data sources allow us to fetch or retrive pre-existing data or computed for use in our configuration file. Data source will get the the existing the resource for us, for example ami id. In our main.tf we used data source to get ami from a region that we want to create our resources, instead of hard coding it, we made our code reusable by passing data source. To get a meta data about ami we want to use we can run the next command on cli.
 ```
