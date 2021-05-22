@@ -63,9 +63,8 @@ module "s3" {
 
 ## Providers within module `provider` meta-argument.
 
-The provider meta-argument specifies which provider configuration to use for a resource, overriding Terraform's default behavior of selecting one based on the resource type name. Its value should be an unquoted <PROVIDER>.<ALIAS> reference.
+If you would like to deploy the same resource but in different region you use provider (alias) meta-argument. We will show it in the next example, to start with we add another `provider block` with `alias` to providers.tf file.
 
-Add another provider block to providers.tf file, if you would like to deploy your resources in a different region we can use providers meta-argument. providers will help to add additional region by using alias. 
 ```
 provider "aws" {
   region = "us-east-1"
@@ -77,7 +76,7 @@ provider = {
 }
 ```
 
-and in a root module when you call it pass that alias, to create a resource in a different region you need to create another module change the environment add alias providers.
+In a `root module` we create another `module block` and add provider aliases.
 
 ```
 module "s3_module_oregon" {
@@ -91,6 +90,16 @@ module "s3_module_oregon" {
    }
 }
 ```
+
+s3 resource in us-east-1,
+
+<img src="images/s3-us-east-1.png" alt="aws" width="750" height="400">
+
+s3 resource in us-west-2,
+
+<img src="images/s3-us-west-2.png" alt="aws" width="750" height="400">
+
+Since we are working with s3 bucket we have to make sure that the bucket name is unique globally and for that reason we added in the environment "dev1" to avoid duplication. That is why when we create a configuration file we have to think it through and make it reusable.
 
 
 ### Useful links:
