@@ -75,17 +75,17 @@ module "ec2_module" {
   ami           = "ami-0742b4e673072066f"  # us-east-1 AMI
 }
 ```
-ec2 in dev environment
+ec2 in dev environment, after running terraform apply,
 
-<img src="images/dev_ec2.png" alt="aws" width="400" height="100">
+<img src="images/dev_ec2.png" alt="aws" width="450" height="500">
 
-ec2 in qa envronment
+ec2 in qa environment after running terraform apply,
 
-<img src="images/qa_ec2.png" alt="aws" width="400" height="100">
+<img src="images/qa_ec2.png" alt="aws" width="450" height="500">
 
 this is how it looks on AWS console
 
-<img src="images/aws_console.png" alt="aws" width="400" height="100">
+<img src="images/aws_console.png" alt="aws" width="700" height="90">
 
 #### Tips and tricks
 
