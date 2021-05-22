@@ -11,7 +11,7 @@ module "s3_module_oregon" {
   # variables in module
   env = "dev1"
 
-  provider = {
+  providers = {
     aws = aws.oregon
    }
 }
