@@ -1,8 +1,7 @@
 locals {
   tags = {
-    Name        = "${var.env}-main"
+    Name        = "${var.env}-s3"
     environment = var.env
-    project     = "${var.env}-wordpress"
-
+    project     = "${var.env}-s3-bucket"
   }
 }
