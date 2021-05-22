@@ -3,5 +3,5 @@ output "s3_id" {
 }
 
 output "tags" {
-  value = local.common_tags
+  value = local.tags
 }
