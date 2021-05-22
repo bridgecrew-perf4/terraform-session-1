@@ -1,4 +1,4 @@
-### Terraform backend
+# Terraform backend
 
 If you are a team who is using Terraform to manage your infrastructure, terraform recommends using remote backend file instead of storing your tfstate file locally. Storing your backend in AWS S3 bucket is one of the options of how you can do it. To do that we have to configure backend file first:
 ```
