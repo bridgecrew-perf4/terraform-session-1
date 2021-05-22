@@ -97,7 +97,7 @@ locals {
 ### Notes
 
 - Terraform block for backend file has to be hardcoded, you can not use variables.
-- Whenever you configure key in terraform block terraform tells you to run ```terraform init``` to reinitialize your backend file.
+- Whenever you configure key in terraform block terraform tells you to run `terraform init` to reinitialize your backend file.
 - A resource or module block cannot use both count and for_each.
 
 ###  Useful links
