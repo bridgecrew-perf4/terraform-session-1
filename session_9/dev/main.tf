@@ -4,5 +4,5 @@ module "ec2_module" {
   # variables in module
   env           = "dev"
   instance_type = "t2.micro"
-  ami           = "ami-0742b4e673072066f"
+  ami           = "ami-0742b4e673072066f"  # us-east-1 AMI
 }
