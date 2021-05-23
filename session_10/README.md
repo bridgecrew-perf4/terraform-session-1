@@ -61,7 +61,7 @@ module "s3" {
 }
 ```
 
-## Providers within module `provider` meta-argument.
+## Providers within modules. `providers` meta-argument.
 
 If you would like to deploy the same resource but in different region you use provider (alias) meta-argument. We will show it in the next example, to start with we add another `provider block` with `alias` to providers.tf file.
 
@@ -100,7 +100,6 @@ s3 resource in us-west-2,
 <img src="images/s3-us-west-2.png" alt="aws" width="750" height="400">
 
 Since we are working with s3 bucket we have to make sure that the bucket name is unique globally and for that reason we added in the environment "dev1" to avoid duplication. That is why when we create a configuration file we have to think it through and make it reusable.
-
 
 ### Useful links:
 
