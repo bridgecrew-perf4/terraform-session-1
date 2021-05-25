@@ -24,8 +24,8 @@ terraform {
 
 When you want to provision your resources in dev environment you run `terraform plan/apply -var-fils=tfvars/dev.tf` and your state file will be isolated under `dev` folder. That is how you will tell Terraform this state file belongs to `dev` environment and for other envoronment we modify backend and variables files, otherwise Terraform will overwrite state file.
 
+With Terraform workspaces we can create defferent workspaces and our state file will be isolated by itself depending which workspace our resources are getting provisioned. The persistent data stored in the backend belongs to a workspace. Initially the backend has only one workspace, which called "default", and thus there is only one Terraform state associated with that configuration. When you run terraform workspace list/show you will get the next output,
 
-The persistent data stored in the backend belongs to a workspace. Initially the backend has only one workspace, which called "default", and thus there is only one Terraform state associated with that configuration. When you run terraform workspace list/show you will get the next output,
 ```
 [ec2-user@ip-172-31-82-91 session_11]$ terraform workspace show
 default
@@ -33,7 +33,15 @@ default
 * default
 ```
 
-With Terraform workspaces we can create defferent workspaces and our state file will be isoloated by itself depending which workspace our resources are getting provisioned. For that we use 
+On the names of our resources we use terraform.workspaces,
+
+```
+resource "aws_sqs_queue" "first_sqs" {
+  name = "${terraform.workspace}-example-queque"
+}
+```
+Since we are working on default workspace the output 
+
 
 the same resource for different environments and the name of our state file in backend.tf will not give us any errors, because it's is getting created in different workspaces also terraform workspace has an option to prefix our state files with env:/. But since we don’t want our resources with the same names, otherwise it will get confusing really fast.
 
