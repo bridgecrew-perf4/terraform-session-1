@@ -16,7 +16,7 @@ backend.tf
 terraform {
   backend "s3" {
     bucket = "nazy-tf-bucket"
-    key    = "dev/s3.tfstate"
+    key    = "dev/sqs.tfstate"
     region = "us-east-1"
   }
 }
@@ -40,24 +40,47 @@ resource "aws_sqs_queue" "first_sqs" {
   name = "${terraform.workspace}-example-queque"
 }
 ```
-Since we are working on default workspace the output 
+Since we are working on `default workspace` the output will come out like this,
 
+```
+# aws_sqs_queue.first_sqs will be created
++ resource "aws_sqs_queue" "first_sqs" {
+    + arn                               = (known after apply)
+    + content_based_deduplication       = false
+    + delay_seconds                     = 0
+    + fifo_queue                        = false
+    + id                                = (known after apply)
+    + kms_data_key_reuse_period_seconds = (known after apply)
+    + max_message_size                  = 262144
+    + message_retention_seconds         = 345600
+    + name                              = "default-example-queque"
+    + name_prefix                       = (known after apply)
+    + policy                            = (known after apply)
+    + receive_wait_time_seconds         = 0
+    + tags_all                          = (known after apply)
+    + visibility_timeout_seconds        = 30
+  }
+```
 
-the same resource for different environments and the name of our state file in backend.tf will not give us any errors, because it's is getting created in different workspaces also terraform workspace has an option to prefix our state files with env:/. But since we don’t want our resources with the same names, otherwise it will get confusing really fast.
+In the backend we use `workspace_key_prefix` otherwise our state file will be stored under  
+`env:/` folder, but since we want to have our state files in order under the same folder otherwise it will get confusing really fast.
 
-
-
-
-
-
+```
+terraform {
+  backend "s3" {
+    bucket               = "nazy-tf-bucket"
+    key                  = "main.tfstate"
+    region               = "us-east-1"
+    workspace_key_prefix = "session_11"
+  }
+}
+```
 
 We can do the same thing on terraform workspaces, and one more thing that I mentioned earlier we solve the name issue for our resource name with interpolations, but we can also use workspace name for it, in that case we don't depend on our tfvars/dev.tf or tfvars/qa.tf files.
 
+each terraform configuration is defined in backend file, isolating your backend is great in terrform workspaces. in company default workspace as a prod environment. it helps to solve backend  storing problem. 
 
-
-each terraform configuration is defined in backend file, isolating your backend is great in terrform workspaces. in complany default workspace as a prod environment. it helps to solve backend  storing problem. 
-
-Useful links:
+## Useful links:
 
 [Workspaces](https://www.terraform.io/docs/cloud/workspaces/index.html)
 
