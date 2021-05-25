@@ -24,7 +24,9 @@ terraform {
 
 When you want to provision your resources in dev environment you run `terraform plan/apply -var-fils=tfvars/dev.tf` and your state file will be isolated under `dev` folder. That is how you will tell Terraform this state file belongs to `dev` environment and for other envoronment we modify backend and variables files, otherwise Terraform will overwrite state file.
 
-With Terraform workspaces we can create defferent workspaces and our state file will be isolated by itself depending which workspace our resources are getting provisioned. The persistent data stored in the backend belongs to a workspace. Initially the backend has only one workspace, which called "default", and thus there is only one Terraform state associated with that configuration. When you run terraform workspace list/show you will get the next output,
+Terraform starts with a single workspace named "default". This workspace is special both because it is the default and also because it cannot ever be deleted. If you've never explicitly used workspaces, then you've only ever worked on the "default" workspace.
+
+With Terraform workspaces we can create different workspaces for environmetn isolation and our state file will be isolated by itself depending which workspace our resources are getting provisioned. The persistent data stored in the backend belongs to a workspace. Initially the backend has only one workspace, which called "default", and thus there is only one Terraform state associated with that configuration. When you run terraform workspace list/show you will get the next output,
 
 ```
 [ec2-user@ip-172-31-82-91 session_11]$ terraform workspace show
@@ -33,15 +35,16 @@ default
 * default
 ```
 
-On the names of our resources we use terraform.workspaces,
+On the names of our resources we use ${terraform.workspaces} interpolation sequence,
 
+main.tf,
 ```
 resource "aws_sqs_queue" "first_sqs" {
   name = "${terraform.workspace}-example-queque"
 }
 ```
-Since we are working on `default workspace` the output will come out like this,
 
+Since we are working on `default workspace` the output will come out like this,
 ```
 # aws_sqs_queue.first_sqs will be created
 + resource "aws_sqs_queue" "first_sqs" {
@@ -62,9 +65,9 @@ Since we are working on `default workspace` the output will come out like this,
   }
 ```
 
-In the backend we use `workspace_key_prefix` otherwise our state file will be stored under  
-`env:/` folder, but since we want to have our state files in order under the same folder otherwise it will get confusing really fast.
+In the backend.tf file we use `workspace_key_prefix` otherwise our state file will be stored under  `env:/` folder and it can get confusing, but since we want to have our state files in order under we use prefix and all our state files will be stord under one folder.
 
+backend.tf, 
 ```
 terraform {
   backend "s3" {
@@ -76,12 +79,8 @@ terraform {
 }
 ```
 
-We can do the same thing on terraform workspaces, and one more thing that I mentioned earlier we solve the name issue for our resource name with interpolations, but we can also use workspace name for it, in that case we don't depend on our tfvars/dev.tf or tfvars/qa.tf files.
-
-each terraform configuration is defined in backend file, isolating your backend is great in terrform workspaces. in company default workspace as a prod environment. it helps to solve backend  storing problem. 
+Most of the time companies treat `default` workspace as a `production` workspace, which describes the intended state of production infrastructure. When a feature branch is created to develop a change, the developer of that feature might create a corresponding workspace and deploy into it a temporary "copy" of the main infrastructure so that changes can be tested without affecting the production infrastructure. Once the change is merged and deployed to the default workspace, the test infrastructure can be destroyed and the temporary workspace deleted.
 
 ## Useful links:
 
-[Workspaces](https://www.terraform.io/docs/cloud/workspaces/index.html)
-
-[]()
+[Workspaces](https://www.terraform.io/docs/language/state/workspaces.html#when-to-use-multiple-workspaces)
